@@ -1,6 +1,7 @@
 myvenv/
 .vscode
 image/
+.idea/
 
 ### Django ###
 *.log
