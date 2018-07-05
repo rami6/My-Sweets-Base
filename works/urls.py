@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.urls import path
 from django.views.generic import TemplateView
-from works.views import WorkTopView
+from works.views import WorksTopView
 
 urlpatterns = [
-    path('', WorkTopView.as_view(), name='top'),
+    path('', WorksTopView.as_view(), name='top'),
 ]

@@ -11,3 +11,7 @@
 .navbar-custom .nav-item:hover .nav-link {
     color: #f26c50;
 }
+
+body {
+    background-color: #E2D1B1;
+}

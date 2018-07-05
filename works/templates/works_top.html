@@ -1,5 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Works</h1>
+<div class="container works">
+    <div class="row">
+    {% for obj in object_list %}
+        <div class="col-md-3 col-sm-5 bg-white m-1">
+            <h4 class="text-center">{{ obj.title }}</h4>
+            <img src="{{ obj.image.url }}" class="w-100">
+            <div class="text-right">{{ obj.made_date }}</div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
 {% endblock content %}
