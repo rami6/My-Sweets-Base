@@ -8,4 +8,4 @@ class WorksTopView(ListView):
     template_name = 'works_top.html'
 
     def get_queryset(self):
-        return Work.objects.all()
+        return Work.objects.all().prefetch_related('recipe_set')
