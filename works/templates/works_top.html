@@ -1,7 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container works">
+    {% load static %}
+    <div class="row">
+        <div class="col-11"></div>
+        <div class="col-1">
+            <input type="image" src='{% static "image/add-button.png" %}' class="add-button"/>
+        </div>
+    </div>
     <div class="row">
     {% for obj in object_list %}
         <div class="col-md-3 col-sm-5 bg-white m-1" data-toggle="modal" data-target="#work-detail{{ forloop.counter }}">
@@ -44,5 +50,4 @@
         </div>
     {% endfor %}
     </div>
-</div>
 {% endblock content %}
