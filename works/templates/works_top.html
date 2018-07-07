@@ -2,10 +2,11 @@
 
 {% block content %}
     {% load static %}
+    <div id="starting">
     <div class="row">
         <div class="col-11"></div>
         <div class="col-1">
-            <input type="image" src='{% static "image/add-button.png" %}' class="add-button"/>
+            <input type="image" src='{% static "image/add-button.png" %}' class="add-button" data-toggle="modal" data-target="#add-work-modal"/>
         </div>
     </div>
     <div class="row">
@@ -50,4 +51,149 @@
         </div>
     {% endfor %}
     </div>
+
+
+    <!-- Add Work Modal -->
+      <div class="modal fade" id="add-work-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">ADD Work</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form v-on:submit.prevent="addWork()">
+            <div class="modal-body">
+                <div class="form-group">
+                  <label for="image">Image</label>
+                  <input
+                    type="file"
+                    class="form-control"
+                    id="image"
+                    v-model="newWork.image"
+                    accept=".jpg, .jpeg, .png">
+                </div>
+                <div class="form-group">
+                  <label for="title">Title</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="title"
+                    placeholder="Enter title"
+                    v-model="newWork.title"
+                    required="required" >
+                </div>
+                <div class="form-group">
+                  <label for="made_date">Date</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="made_date"
+                    v-model="newWork.made_date">
+                </div>
+                <div class="form-group">
+                  <label for="note">Note</label>
+                  <textarea
+                    class="form-control"
+                    id="note"
+                    placeholder="Enter Note"
+                    v-model="newWork.note"
+                    rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+            </form>
+          </div>
+        </div>
+       <div class="loading" v-if="loading===true">Loading&#8230;</div>
+      </div>
+      <!-- End of article modal -->
+    </div>
 {% endblock content %}
+
+{% block extra_js %}
+    <script type="text/javascript">
+        Vue.http.headers.common['X-CSRFToken'] = "{{ csrf_token }}";
+         new Vue({
+           el: '#starting',
+           delimiters: ['${','}'],
+           data: {
+           works: [],
+           loading: false,
+           currentWork: {},
+           message: null,
+           newWork: { 'title': null, 'made_date': null, 'note': null, 'image': "" },
+         },
+         mounted: function() {
+         this.getWorks();
+        },
+         methods: {
+           getWorks: function() {
+               this.loading = true;
+               this.$http.get('/api/work/')
+                   .then((response) => {
+                       this.works = response.data;
+                       this.loading = false;
+                    })
+                    .catch((err) => {
+                        this.loading = false;
+                        console.log(err);
+                    })
+           },
+             getWork: function(id) {
+              this.loading = true;
+              this.$http.get('/api/work/${id}/')
+                  .then((response) => {
+                    this.currentWork = response.data;
+                    this.loading = false;
+                  })
+                  .catch((err) => {
+                    this.loading = false;
+                    console.log(err);
+                  })
+             },
+             addWork: function() {
+              this.loading = true;
+              this.$http.post('/api/work/', this.newWork)
+                  .then((response) => {
+                    this.loading = false;
+                    this.getWorks();
+                  })
+                  .catch((err) => {
+                    this.loading = false;
+                    console.log(err);
+                  })
+             },
+             updateWork: function() {
+              this.loading = true;
+              this.$http.put('/api/work/${this.currentWork.work_id}/', this.currentWork)
+                  .then((response) => {
+                    this.loading = false;
+                    this.currentWork = response.data;
+                    this.getWorks();
+                  })
+                  .catch((err) => {
+                    this.loading = false;
+                    console.log(err);
+                  })
+             },
+             deleteWork: function(id) {
+              this.loading = true;
+              this.$http.delete('/api/work/${id}/')
+                  .then((response) => {
+                    this.loading = false;
+                    this.getWorks();
+                  })
+                  .catch((err) => {
+                    this.loading = false;
+                    console.log(err);
+                  })
+             }
+            }
+         });
+    </script>
+{% endblock extra_js %}
