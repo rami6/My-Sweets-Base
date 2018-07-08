@@ -11,14 +11,14 @@
     </div>
     <div class="row">
     {% for obj in object_list %}
-        <div class="col-md-3 col-sm-5 bg-white m-1" data-toggle="modal" data-target="#work-detail{{ forloop.counter }}">
+        <div class="col-md-3 col-sm-5 bg-white m-1" data-toggle="modal" data-target="#work-detail{{ obj.id }}">
             <h4 class="text-center">{{ obj.title }}</h4>
-            <img src="{{ obj.image.url }}" class="w-100 ">
+            <img src="{{ obj.image.url }}" class="w-100">
             <div class="text-right">{{ obj.made_date }}</div>
         </div>
 
         <!-- Modal -->
-        <div class="modal fade" id="work-detail{{ forloop.counter }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="work-detail{{ obj.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -43,8 +43,8 @@
                   </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-outline-danger">Delete</button>
-                <button type="button" class="btn btn-primary">Edit</button>
+                <button type="button" class="btn btn-outline-danger" v-on:click="deleteWork({{ obj.id }})">Delete</button>
+                <button type="button" class="btn btn-primary" v-on:click="getWork({{ obj.id }})" data-dismiss="modal">Edit</button>
               </div>
             </div>
           </div>
@@ -111,7 +111,69 @@
         </div>
        <div class="loading" v-if="loading===true">Loading&#8230;</div>
       </div>
-      <!-- End of Work modal -->
+      <!-- End of Add Work modal -->
+        <!-- Edit Work Modal -->
+      <div class="modal fade" id="edit-work-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">EDIT Work</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form v-on:submit.prevent="updateWork()">
+            <div class="modal-body">
+                <div class="form-group">
+                  <label for="image">Image</label>
+                    <div>
+                    <img v-bind:src="currentWork.image" class="w-25 mb-1">
+                    </div>
+                  <input
+                    type="file"
+                    class="form-control"
+                    id="image"
+                    accept=".jpg, .jpeg, .png"
+                    @change="processFile($event)">
+                </div>
+                <div class="form-group">
+                  <label for="title">Title</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="title"
+                    placeholder="Enter title"
+                    v-model="currentWork.title"
+                    required="required" >
+                </div>
+                <div class="form-group">
+                  <label for="made_date">Date</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="made_date"
+                    v-model="currentWork.made_date">
+                </div>
+                <div class="form-group">
+                  <label for="note">Note</label>
+                  <textarea
+                    class="form-control"
+                    id="note"
+                    placeholder="Enter Note"
+                    v-model="currentWork.note"
+                    rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+            </form>
+          </div>
+        </div>
+       <div class="loading" v-if="loading===true">Loading&#8230;</div>
+      </div>
+    <!-- End of Edit Work modal -->
+
     </div>
 {% endblock content %}
 
@@ -149,6 +211,7 @@
                     this.$http.get(`/api/work/${id}/`)
                         .then((response) => {
                             this.currentWork = response.data;
+                            $("#edit-work-modal").modal('show');
                             this.loading = false;
                         })
                         .catch((err) => {
@@ -170,7 +233,7 @@
                 },
                 updateWork: function() {
                     this.loading = true;
-                    this.$http.put(`/api/work/${this.currentWork.work_id}/`, this.currentWork)
+                    this.$http.put(`/api/work/${this.currentWork.id}/`, this.currentWork, {headers: {'Content-Type': 'application/json'}})
                         .then((response) => {
                             this.loading = false;
                             this.currentWork = response.data;
