@@ -2,6 +2,16 @@
 
 {% block content %}
 
+<div class="mt-2">
+    {% if form.errors.non_field_errors %}
+    {{ form.errors.non_field_errors }}
+    {% endif %}
+    <form method="POST"> {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+</div>
+
 {% for obj in object_list %}
 <div class="row justify-content-center">
     <span class="col-md-3">{{ obj.name }}</span>
