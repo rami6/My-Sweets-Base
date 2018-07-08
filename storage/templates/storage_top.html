@@ -14,8 +14,14 @@
 
 {% for obj in object_list %}
 <div class="row justify-content-center">
-    <span class="col-md-3">{{ obj.name }}</span>
-    <span class="col-md-3">{{ obj.expiration_date }}</span>
+    <span class="col-1 pr-1">
+        {% if obj.is_expired  %}
+            {% load static %}
+            <img src='{% static "image/caution-mark.png" %}' alt="expired" class="float-right" height="23px" />
+        {% endif %}
+    </span>
+    <span class="col-md-3 pl-0 pr-2">{{ obj.name }}</span>
+    <span class="col-md-2 pl-0">{{ obj.expiration_date }}</span>
 </div>
 {% endfor %}
 
