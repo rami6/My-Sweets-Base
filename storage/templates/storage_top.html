@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h4>storage</h4>
+
+{% for obj in object_list %}
+<div class="row justify-content-center">
+    <span class="col-md-3">{{ obj.name }}</span>
+    <span class="col-md-3">{{ obj.expiration_date }}</span>
+</div>
+{% endfor %}
+
 {% endblock content %}
 
