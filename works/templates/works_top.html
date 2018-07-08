@@ -179,7 +179,10 @@
 
 {% block extra_js %}
     <script type="text/javascript">
-        Vue.http.headers.common['X-CSRFToken'] = "{{ csrf_token }}";
+        axios.defaults.headers.common['X-CSRFToken'] = "{{ csrf_token }}";
+        axios.defaults.headers.post['Content-Type'] = 'application/json';
+        Vue.prototype.$http = axios;
+
         new Vue({
             el: '#starting',
             delimiters: ['${','}'],
