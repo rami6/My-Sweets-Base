@@ -118,85 +118,85 @@
 {% block extra_js %}
     <script type="text/javascript">
         Vue.http.headers.common['X-CSRFToken'] = "{{ csrf_token }}";
-         new Vue({
-           el: '#starting',
-           delimiters: ['${','}'],
-           data: {
-           works: [],
-           loading: false,
-           currentWork: {},
-           message: null,
-           newWork: { 'title': null, 'made_date': null, 'note': null, 'image': null },
-         },
-         mounted: function() {
-         this.getWorks();
-        },
-         methods: {
-           getWorks: function() {
-               this.loading = true;
-               this.$http.get('/api/work/')
-                   .then((response) => {
-                       this.works = response.data;
-                       this.loading = false;
-                    })
-                    .catch((err) => {
-                        this.loading = false;
-                        console.log(err);
-                    })
-           },
-             getWork: function(id) {
-              this.loading = true;
-              this.$http.get('/api/work/${id}/')
-                  .then((response) => {
-                    this.currentWork = response.data;
-                    this.loading = false;
-                  })
-                  .catch((err) => {
-                    this.loading = false;
-                    console.log(err);
-                  })
-             },
-             addWork: function() {
-              this.loading = true;
-              this.$http.post('/api/work/', this.newWork, {headers: {'Content-Type': 'application/json'}})
-                  .then((response) => {
-                    this.loading = false;
-                    this.getWorks();
-                  })
-                  .catch((err) => {
-                    this.loading = false;
-                    console.log(err);
-                  })
-             },
-             updateWork: function() {
-              this.loading = true;
-              this.$http.put('/api/work/${this.currentWork.work_id}/', this.currentWork)
-                  .then((response) => {
-                    this.loading = false;
-                    this.currentWork = response.data;
-                    this.getWorks();
-                  })
-                  .catch((err) => {
-                    this.loading = false;
-                    console.log(err);
-                  })
-             },
-             deleteWork: function(id) {
-              this.loading = true;
-              this.$http.delete('/api/work/${id}/')
-                  .then((response) => {
-                    this.loading = false;
-                    this.getWorks();
-                  })
-                  .catch((err) => {
-                    this.loading = false;
-                    console.log(err);
-                  })
-             },
-             processFile: function(event) {
-                this.image = event.target.files[0]
-             },
+        new Vue({
+            el: '#starting',
+            delimiters: ['${','}'],
+            data: {
+               works: [],
+               loading: false,
+               currentWork: {},
+               message: null,
+               newWork: { 'title': null, 'made_date': null, 'note': null, 'image': null },
+            },
+            mounted: function() {
+                this.getWorks();
+            },
+            methods: {
+                getWorks: function() {
+                    this.loading = true;
+                    this.$http.get('/api/work/')
+                        .then((response) => {
+                            this.works = response.data;
+                            this.loading = false;
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                },
+                getWork: function(id) {
+                    this.loading = true;
+                    this.$http.get('/api/work/${id}/')
+                        .then((response) => {
+                            this.currentWork = response.data;
+                            this.loading = false;
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                },
+                addWork: function() {
+                    this.loading = true;
+                    this.$http.post('/api/work/', this.newWork, {headers: {'Content-Type': 'application/json'}})
+                        .then((response) => {
+                            this.loading = false;
+                            this.getWorks();
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                },
+                updateWork: function() {
+                    this.loading = true;
+                    this.$http.put('/api/work/${this.currentWork.work_id}/', this.currentWork)
+                        .then((response) => {
+                            this.loading = false;
+                            this.currentWork = response.data;
+                            this.getWorks();
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                },
+                deleteWork: function(id) {
+                    this.loading = true;
+                    this.$http.delete('/api/work/${id}/')
+                        .then((response) => {
+                            this.loading = false;
+                            this.getWorks();
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                },
+                processFile: function(event) {
+                    this.image = event.target.files[0]
+                },
             }
-         });
+        });
     </script>
 {% endblock extra_js %}
