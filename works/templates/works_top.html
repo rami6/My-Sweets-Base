@@ -71,8 +71,9 @@
                     type="file"
                     class="form-control"
                     id="image"
+                    ref="file"
                     accept=".jpg, .jpeg, .png"
-                    @change="processFile($event)">
+                    @change="processFile()">
                 </div>
                 <div class="form-group">
                   <label for="title">Title</label>
@@ -223,8 +224,9 @@
                         })
                 },
                 addWork: function() {
+                    console.log(this.newWork);
                     this.loading = true;
-                    this.$http.post('/api/work/', this.newWork, {headers: {'Content-Type': 'application/json'}})
+                    this.$http.post('/api/work/', this.newWork)
                         .then((response) => {
                             this.loading = false;
                             this.getWorks();
@@ -236,7 +238,7 @@
                 },
                 updateWork: function() {
                     this.loading = true;
-                    this.$http.put(`/api/work/${this.currentWork.id}/`, this.currentWork, {headers: {'Content-Type': 'application/json'}})
+                    this.$http.put(`/api/work/${this.currentWork.id}/`, this.currentWork)
                         .then((response) => {
                             this.loading = false;
                             this.currentWork = response.data;
@@ -259,8 +261,8 @@
                             console.log(err);
                         })
                 },
-                processFile: function(event) {
-                    this.image = event.target.files[0]
+                processFile: function() {
+                    this.newWork.image = this.$refs.file.files[0];
                 },
             }
         });
