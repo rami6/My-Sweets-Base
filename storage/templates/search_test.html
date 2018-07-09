@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block extra_meta %}
+    <meta name=”viewport” content=”width=device-width, initial-scale=1.0">
+{% endblock extra_meta %}
+
+{% block content %}
+<div id="vue-el">
+    <form v-on:submit.prevent="searchIngredients(word)" class="form-inline m-2">
+      <input
+        type="text"
+        class="form-control"
+        id="word"
+        placeholder="Search"
+        v-model="word">
+    </form>
+    <table class="table">
+        <tbody>
+            <tr v-for="ingredient in ingredients">
+                <td>${ingredient.name}</td>
+                <td>${ingredient.expiration_date}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+    <script type="text/javascript">
+        axios.defaults.headers.common['X-CSRFToken'] = "{{ csrf_token }}";
+        axios.defaults.headers.post['Content-Type'] = 'application/json';
+
+        new Vue({
+            el: '#vue-el',
+            delimiters: ['${','}'],
+            data: {
+                ingredients: [],
+                loading: false,
+                currentIngredient: {},
+                message: null,
+                word: null,
+                newIngredient: { 'name': null, 'expiration_date': null },
+            },
+            mounted: function() {
+                this.getIngredients();
+            },
+            methods: {
+                getIngredients: function() {
+                    this.loading = true;
+                    axios.get('/api/storage/search/')
+                        .then((response) => {
+                            this.ingredients = response.data;
+                            this.loading = false;
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                },
+                searchIngredients: function(word) {
+                    this.loading = true;
+                    axios.get('/api/storage/search/?search=' + word)
+                        .then((response) => {
+                            this.ingredients = response.data;
+                            this.loading = false;
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                },
+                getWork: function(id) {
+                    this.loading = true;
+                    axios.get(`/api/work/${id}/`)
+                        .then((response) => {
+                            this.currentWork = response.data;
+                            $("#edit-work-modal").modal('show');
+                            this.loading = false;
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                },
+                addWork: function() {
+                    console.log(this.newWork);
+                    this.loading = true;
+                    axios.post('/api/work/', this.newWork)
+                        .then((response) => {
+                            this.loading = false;
+                            this.getWorks();
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                },
+                updateWork: function() {
+                    this.loading = true;
+                    axios.put(`/api/work/${this.currentWork.id}/`, this.currentWork)
+                        .then((response) => {
+                            this.loading = false;
+                            this.currentWork = response.data;
+                            this.getWorks();
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                },
+                deleteWork: function(id) {
+                    this.loading = true;
+                    axios.delete(`/api/work/${id}/`)
+                        .then((response) => {
+                            this.loading = false;
+                            this.getWorks();
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                },
+            }
+        });
+    </script>
+{% endblock extra_js %}
