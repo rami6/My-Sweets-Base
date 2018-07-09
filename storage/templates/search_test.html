@@ -33,10 +33,21 @@
             v-model="word">
     </form>
     <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Expiration Date</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
         <tbody>
             <tr v-for="ingredient in ingredients">
                 <td>${ingredient.name}</td>
                 <td>${ingredient.expiration_date}</td>
+                <td>
+                {% load static %}
+                <img v-if="ingredient.is_expired" src='{% static "image/caution-mark.png" %}' alt="expired" class="float-left" height="23px" />
+                </td>
             </tr>
         </tbody>
     </table>
@@ -99,6 +110,8 @@
                             this.loading = false;
                             console.log(err);
                         })
-                }
+                },
+            }
+        })
     </script>
 {% endblock extra_js %}
