@@ -6,13 +6,31 @@
 
 {% block content %}
 <div id="vue-el">
+    <form v-on:submit.prevent="addIngredient()" class="form-inline m-2">
+        <input
+            type="text"
+            class="form-control"
+            id="name"
+            placeholder="Name"
+            v-model="newIngredient.name">
+
+        <div class="form-group ml-2">
+            <label for="expiration_date">Expiration Date: </label>
+            <input
+                type="date"
+                class="form-control"
+                id="expiration_date"
+                v-model="newIngredient.expiration_date">
+        </div>
+        <button type="submit" class="btn btn-dark ml-1">Add</button>
+    </form>
     <form v-on:submit.prevent="searchIngredients(word)" class="form-inline m-2">
-      <input
-        type="text"
-        class="form-control"
-        id="word"
-        placeholder="Search"
-        v-model="word">
+        <input
+            type="text"
+            class="form-control"
+            id="word"
+            placeholder="Search"
+            v-model="word">
     </form>
     <table class="table">
         <tbody>
@@ -69,58 +87,18 @@
                             console.log(err);
                         })
                 },
-                getWork: function(id) {
+                addIngredient: function() {
+                    console.log(this.newIngredient);
                     this.loading = true;
-                    axios.get(`/api/work/${id}/`)
+                    axios.post('/api/ingredient/', this.newIngredient)
                         .then((response) => {
-                            this.currentWork = response.data;
-                            $("#edit-work-modal").modal('show');
                             this.loading = false;
+                            this.getIngredients();
                         })
                         .catch((err) => {
                             this.loading = false;
                             console.log(err);
                         })
-                },
-                addWork: function() {
-                    console.log(this.newWork);
-                    this.loading = true;
-                    axios.post('/api/work/', this.newWork)
-                        .then((response) => {
-                            this.loading = false;
-                            this.getWorks();
-                        })
-                        .catch((err) => {
-                            this.loading = false;
-                            console.log(err);
-                        })
-                },
-                updateWork: function() {
-                    this.loading = true;
-                    axios.put(`/api/work/${this.currentWork.id}/`, this.currentWork)
-                        .then((response) => {
-                            this.loading = false;
-                            this.currentWork = response.data;
-                            this.getWorks();
-                        })
-                        .catch((err) => {
-                            this.loading = false;
-                            console.log(err);
-                        })
-                },
-                deleteWork: function(id) {
-                    this.loading = true;
-                    axios.delete(`/api/work/${id}/`)
-                        .then((response) => {
-                            this.loading = false;
-                            this.getWorks();
-                        })
-                        .catch((err) => {
-                            this.loading = false;
-                            console.log(err);
-                        })
-                },
-            }
-        });
+                }
     </script>
 {% endblock extra_js %}
