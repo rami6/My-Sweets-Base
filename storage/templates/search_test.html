@@ -99,7 +99,6 @@
                         })
                 },
                 addIngredient: function() {
-                    console.log(this.newIngredient);
                     this.loading = true;
                     axios.post('/api/ingredient/', this.newIngredient)
                         .then((response) => {
