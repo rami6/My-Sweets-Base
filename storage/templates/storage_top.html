@@ -42,7 +42,7 @@
         </thead>
         <tbody>
             <tr v-for="ingredient in ingredients">
-                <td>${ingredient.name}</td>
+                <td v-on:dblclick="getIngredient(ingredient.id)">${ingredient.name}</td>
                 <td>${ingredient.expiration_date}</td>
                 <td>
                 {% load static %}
@@ -51,6 +51,37 @@
             </tr>
         </tbody>
     </table>
+
+<!-- Edit Ingredient modal -->
+<div class="modal fade" id="edit-ingredient_name-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">EDIT Ingredient Name</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form v-on:submit.prevent="updateIngredient()">
+        <div class="modal-body">
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            placeholder="Enter name"
+            v-model="currentIngredient.name"
+            required="required" >
+        </div>
+        <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" >Save changes</button>
+        </div>
+        </form>
+      </div>
+    </div>
+   <div class="loading" v-if="loading===true">Loading&#8230;</div>
+  </div>
+<!-- End of Edit Ingredient modal -->
+
 </div>
 {% endblock content %}
 
@@ -97,6 +128,19 @@
                             console.log(err);
                         })
                 },
+                getIngredient: function(id) {
+                    this.loading = true;
+                    axios.get(`/api/ingredient/${id}/`)
+                        .then((response) => {
+                            this.currentIngredient = response.data;
+                            $("#edit-ingredient_name-modal").modal('show');
+                            this.loading = false;
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                },
                 searchIngredients: function(word) {
                     this.loading = true;
                     axios.get(this.storageAPIUrl + '/?search=' + word)
@@ -136,6 +180,21 @@
                         .then((response) => {
                             this.loading = false;
                             this.getIngredients();
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                },
+                updateIngredient: function() {
+                    this.loading = true;
+                    console.log(this.currentIngredient)
+                    axios.put(`/api/ingredient/${this.currentIngredient.id}/`, this.currentIngredient)
+                        .then((response) => {
+                            this.loading = false;
+                            this.currentIngredient = response.data;
+                            this.getIngredients();
+                            $("#edit-ingredient_name-modal").modal('toggle');
                         })
                         .catch((err) => {
                             this.loading = false;
