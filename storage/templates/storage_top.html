@@ -35,8 +35,8 @@
     <table class="table">
         <thead>
           <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Expiration Date</th>
+            <th scope="col" v-on:click="switchSort('name')">Name</th>
+            <th scope="col" v-on:click="switchSort('expiration')">Expiration Date</th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -66,8 +66,10 @@
                 ingredients: [],
                 loading: false,
                 currentIngredient: {},
-                message: null,
                 word: null,
+                sortType: "expirationA",
+                storageAPIUrl: null,
+                storageAPIUrls:{ 'expirationA' : '/api/storage/e-a', 'expirationD' : '/api/storage/e-d', 'nameA' : '/api/storage/n-a', 'nameD' : '/api/storage/n-d' },
                 newIngredient: { 'name': null, 'expiration_date': null },
             },
             mounted: function() {
@@ -75,8 +77,17 @@
             },
             methods: {
                 getIngredients: function() {
+                    if (this.sortType == "expirationA") {
+                        this.storageAPIUrl = this.storageAPIUrls.expirationA
+                    } else if (this.sortType == "expirationD") {
+                        this.storageAPIUrl = this.storageAPIUrls.expirationD
+                    } else if (this.sortType == "nameA") {
+                        this.storageAPIUrl = this.storageAPIUrls.nameA
+                    } else {
+                        this.storageAPIUrl = this.storageAPIUrls.nameD
+                    }
                     this.loading = true;
-                    axios.get('/api/storage/search/')
+                    axios.get(this.storageAPIUrl)
                         .then((response) => {
                             this.ingredients = response.data;
                             this.loading = false;
@@ -88,7 +99,7 @@
                 },
                 searchIngredients: function(word) {
                     this.loading = true;
-                    axios.get('/api/storage/search/?search=' + word)
+                    axios.get(this.storageAPIUrl + '/?search=' + word)
                         .then((response) => {
                             this.ingredients = response.data;
                             this.loading = false;
@@ -97,6 +108,27 @@
                             this.loading = false;
                             console.log(err);
                         })
+                },
+                switchSort: function(th) {
+                    this.loading = true;
+                    if (th == "name") {
+                        if (this.sortType == "nameA") {
+                            this.storageAPIUrl = this.storageAPIUrls.nameD
+                            this.sortType = "nameD"
+                        } else {
+                            this.storageAPIUrl = this.storageAPIUrls.nameA
+                            this.sortType = "nameA"
+                        }
+                    } else if (th == "expiration") {
+                        if (this.sortType == "expirationA") {
+                            this.storageAPIUrl = this.storageAPIUrls.expirationD
+                            this.sortType = "expirationD"
+                        } else {
+                            this.storageAPIUrl = this.storageAPIUrls.expirationA
+                            this.sortType = "expirationA"
+                        }
+                    }
+                    this.getIngredients();
                 },
                 addIngredient: function() {
                     this.loading = true;
