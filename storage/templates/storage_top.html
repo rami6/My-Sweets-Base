@@ -43,7 +43,7 @@
         <tbody>
             <tr v-for="ingredient in ingredients">
                 <td v-on:dblclick="getIngredient(ingredient.id)">${ingredient.name}</td>
-                <td>${ingredient.expiration_date}</td>
+                <td v-on:dblclick="getIngredient(ingredient.id)">${ingredient.expiration_date}</td>
                 <td>
                 {% load static %}
                 <img v-if="ingredient.is_expired" src='{% static "image/caution-mark.png" %}' alt="expired" class="float-left" height="23px" />
@@ -52,17 +52,17 @@
         </tbody>
     </table>
 
-<!-- Edit Ingredient modal -->
-<div class="modal fade" id="edit-ingredient_name-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+<!-- Edit Ingredient-name modal -->
+<div class="modal fade" id="edit-ingredient-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">EDIT Ingredient Name</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">Edit Ingredient</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form v-on:submit.prevent="updateIngredient()">
+        <form v-on:submit.prevent="updateIngredient()" class="form-inline">
         <div class="modal-body">
           <input
             type="text"
@@ -71,6 +71,12 @@
             placeholder="Enter name"
             v-model="currentIngredient.name"
             required="required" >
+          <input
+            type="date"
+            class="form-control"
+            id="expiration_date"
+            placeholder="Enter name"
+            v-model="currentIngredient.expiration_date" >
         </div>
         <div class="modal-footer">
         <button type="submit" class="btn btn-primary" >Save changes</button>
@@ -80,7 +86,7 @@
     </div>
    <div class="loading" v-if="loading===true">Loading&#8230;</div>
   </div>
-<!-- End of Edit Ingredient modal -->
+<!-- End of Edit Ingredient-name modal -->
 
 </div>
 {% endblock content %}
@@ -133,7 +139,7 @@
                     axios.get(`/api/ingredient/${id}/`)
                         .then((response) => {
                             this.currentIngredient = response.data;
-                            $("#edit-ingredient_name-modal").modal('show');
+                            $("#edit-ingredient-modal").modal('show');
                             this.loading = false;
                         })
                         .catch((err) => {
@@ -194,7 +200,7 @@
                             this.loading = false;
                             this.currentIngredient = response.data;
                             this.getIngredients();
-                            $("#edit-ingredient_name-modal").modal('toggle');
+                            $("#edit-ingredient-modal").modal('toggle');
                         })
                         .catch((err) => {
                             this.loading = false;
