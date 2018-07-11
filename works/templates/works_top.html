@@ -68,7 +68,6 @@
                     type="file"
                     class="form-control"
                     id="image"
-                    ref="file"
                     accept=".jpg, .jpeg, .png"
                     @change="processFile($event.target.files)">
                 </div>
@@ -238,7 +237,9 @@
                 addWork: function() {
                     let formData = new FormData();
                     formData.append("title", this.newWork.title)
-                    formData.append("image", this.newWork.image)
+                    if (this.newWork.image) {
+                        formData.append("image", this.newWork.image)
+                    }
                     formData.append("made_date", this.newWork.made_date)
                     formData.append("note", this.newWork.note)
 
