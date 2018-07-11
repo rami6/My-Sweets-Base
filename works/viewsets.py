@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from .models import Work, Recipe
 from .serializers import WorkSerializer, RecipeSerializer
+from rest_framework.parsers import FormParser, MultiPartParser
 
 
 class WorkViewSet(viewsets.ModelViewSet):

@@ -60,7 +60,7 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form v-on:submit.prevent="addWork()">
+            <form enctype="multipart/form-data" v-on:submit.prevent="addWork()">
             <div class="modal-body">
                 <div class="form-group">
                   <label for="image">Image</label>
@@ -70,7 +70,7 @@
                     id="image"
                     ref="file"
                     accept=".jpg, .jpeg, .png"
-                    @change="processFile()">
+                    @change="processFile($event.target.files)">
                 </div>
                 <div class="form-group">
                   <label for="title">Title</label>
@@ -272,8 +272,10 @@
                             console.log(err);
                         })
                 },
-                processFile: function() {
-                    this.newWork.image = this.$refs.file.files[0];
+                processFile: function(filelist) {
+                    if (!filelist.length) return;
+                    this.newWork.image = filelist[0];
+                    console.log(filelist)
                 },
             }
         });

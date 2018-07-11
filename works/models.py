@@ -13,7 +13,7 @@ class Work(models.Model):
     title       = models.CharField(max_length=120)
     made_date   = models.DateField(default=datetime.date.today, null=True, blank=True)
     note        = models.TextField(max_length=2000, null=True, blank=True)
-    image       = models.FileField(upload_to='work_pic', default='default_image.png')
+    image       = models.ImageField(upload_to='work_pic', default='default_image.png')
 
     def __str__(self):
         return self.title
