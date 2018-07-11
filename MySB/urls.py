@@ -4,7 +4,7 @@ from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
 from .routers import router
-from .apiviews import StorageSearchAPIView_expirationA, StorageSearchAPIView_expirationD, StorageSearchAPIView_nameA, StorageSearchAPIView_nameD
+from .apiviews import StorageSearchAPIView_expirationA, StorageSearchAPIView_expirationD, StorageSearchAPIView_nameA, StorageSearchAPIView_nameD, RecipeListAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -15,5 +15,6 @@ urlpatterns = [
     path('api/storage/e-d/', StorageSearchAPIView_expirationD.as_view()),
     path('api/storage/n-a/', StorageSearchAPIView_nameA.as_view()),
     path('api/storage/n-d/', StorageSearchAPIView_nameD.as_view()),
+    path('api/works/recipe-by-work/<int:work_id>', RecipeListAPIView.as_view()),
     path('api/', include(router.urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

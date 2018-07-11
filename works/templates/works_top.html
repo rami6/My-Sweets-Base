@@ -2,7 +2,7 @@
 
 {% block content %}
     {% load static %}
-    <div id="starting">
+    <div id="vue-el">
     <div class="row">
         <div class="col-11"></div>
         <div class="col-1">
@@ -10,49 +10,46 @@
         </div>
     </div>
     <div class="row">
-    {% for obj in object_list %}
-        <div class="col-md-3 col-sm-5 bg-white m-1" data-toggle="modal" data-target="#work-detail{{ obj.id }}">
-            <h4 class="text-center">{{ obj.title }}</h4>
-            <img src="{{ obj.image.url }}" class="w-100">
-            <div class="text-right">{{ obj.made_date }}</div>
+        <div class="col-md-3 col-sm-5 bg-white m-1" v-for="work in works" v-on:click="getWork(work.id)">
+            <h4 class="text-center">${work.title}</h4>
+            <img v-bind:src="work.image" class="w-100">
+            <div class="text-right">${work.made_date}</div>
         </div>
-
-        <!-- Modal -->
-        <div class="modal fade" id="work-detail{{ obj.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">{{ obj.title }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                  <div class="container-fluid">
-                    <div class="row">
-                      <div class="col-md-4"><img src="{{ obj.image.url }}" class="w-100 "></div>
-                      <div class="col-md-8">
-                          {% for recipe in obj.recipe_set.all %}
-                            <a href="{{ recipe.url }}">{{ recipe.link_title }}</a>
-                          {% endfor %}
-                          <div>{{ obj.made_date }}</div>
-                          <div>{{ obj.note }}</div>
-                      </div>
-                    </div>
-
-                  </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-outline-danger" v-on:click="deleteWork({{ obj.id }})">Delete</button>
-                <button type="button" class="btn btn-primary" v-on:click="getWork({{ obj.id }})" data-dismiss="modal">Edit</button>
-              </div>
-            </div>
-          </div>
-        </div>
-    {% endfor %}
     </div>
 
-
+    <!-- Work detail Modal -->
+    <div class="modal fade" id="detail-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">${currentWork.title}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-md-4"><img v-bind:src="currentWork.image" class="w-100 "></div>
+                  <div class="col-md-8">
+                    <div v-for="recipe in currentWork_recipes">
+                        <a v-bind:href="recipe.url">${recipe.link_title}</a>
+                    </div>
+                    <div>${currentWork.made_date}</div>
+                    <div>${currentWork.note}</div>
+                  </div>
+                </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-danger" v-on:click="deleteWork(currentWork.id)">Delete</button>
+            <button type="button" class="btn btn-primary" v-on:click="getWork(currentWork.id)">Edit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of Work detail Modal -->
+        
     <!-- Add Work Modal -->
       <div class="modal fade" id="add-work-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -175,24 +172,25 @@
       </div>
     <!-- End of Edit Work modal -->
 
-    </div>
+
+</div>
 {% endblock content %}
 
 {% block extra_js %}
     <script type="text/javascript">
         axios.defaults.headers.common['X-CSRFToken'] = "{{ csrf_token }}";
         axios.defaults.headers.post['Content-Type'] = 'application/json';
-        Vue.prototype.$http = axios;
 
         new Vue({
-            el: '#starting',
+            el: '#vue-el',
             delimiters: ['${','}'],
             data: {
-               works: [],
-               loading: false,
-               currentWork: {},
-               message: null,
-               newWork: { 'title': null, 'made_date': null, 'note': null, 'image': null },
+                works: [],
+                loading: false,
+                currentWork: {},
+                currentWork_recipes: [],
+                message: null,
+                newWork: { 'title': null, 'made_date': null, 'note': null, 'image': null },
             },
             mounted: function() {
                 this.getWorks();
@@ -200,7 +198,7 @@
             methods: {
                 getWorks: function() {
                     this.loading = true;
-                    this.$http.get('/api/work/')
+                    axios.get('/api/work/')
                         .then((response) => {
                             this.works = response.data;
                             this.loading = false;
@@ -212,10 +210,23 @@
                 },
                 getWork: function(id) {
                     this.loading = true;
-                    this.$http.get(`/api/work/${id}/`)
+                    axios.get(`/api/work/${id}/`)
                         .then((response) => {
                             this.currentWork = response.data;
-                            $("#edit-work-modal").modal('show');
+                            this.getRecipe(id)
+                            $("#detail-modal").modal('show');
+                            this.loading = false;
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                },
+                getRecipe: function(work_id) {
+                    this.loading = true;
+                    axios.get('/api/works/recipe-by-work/' + work_id)
+                        .then((response) => {
+                            this.currentWork_recipes = response.data;
                             this.loading = false;
                         })
                         .catch((err) => {
@@ -226,7 +237,7 @@
                 addWork: function() {
                     console.log(this.newWork);
                     this.loading = true;
-                    this.$http.post('/api/work/', this.newWork)
+                    axios.post('/api/work/', this.newWork)
                         .then((response) => {
                             this.loading = false;
                             this.getWorks();
@@ -238,7 +249,7 @@
                 },
                 updateWork: function() {
                     this.loading = true;
-                    this.$http.put(`/api/work/${this.currentWork.id}/`, this.currentWork)
+                    axios.put(`/api/work/${this.currentWork.id}/`, this.currentWork)
                         .then((response) => {
                             this.loading = false;
                             this.currentWork = response.data;
@@ -251,7 +262,7 @@
                 },
                 deleteWork: function(id) {
                     this.loading = true;
-                    this.$http.delete(`/api/work/${id}/`)
+                    axios.delete(`/api/work/${id}/`)
                         .then((response) => {
                             this.loading = false;
                             this.getWorks();
