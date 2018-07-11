@@ -88,7 +88,8 @@
                     type="date"
                     class="form-control"
                     id="made_date"
-                    v-model="newWork.made_date">
+                    v-model="newWork.made_date"
+                    required="required">
                 </div>
                 <div class="form-group">
                   <label for="note">Note</label>
@@ -189,11 +190,11 @@
                 loading: false,
                 currentWork: {},
                 currentWork_recipes: [],
-                message: null,
                 newWork: { 'title': null, 'made_date': null, 'note': null, 'image': null },
             },
             mounted: function() {
                 this.getWorks();
+                this.setDefaultValue();
             },
             methods: {
                 getWorks: function() {
@@ -235,12 +236,22 @@
                         })
                 },
                 addWork: function() {
-                    console.log(this.newWork);
+                    let formData = new FormData();
+                    formData.append("title", this.newWork.title)
+                    formData.append("image", this.newWork.image)
+                    formData.append("made_date", this.newWork.made_date)
+                    formData.append("note", this.newWork.note)
+
                     this.loading = true;
-                    axios.post('/api/work/', this.newWork)
+                    axios.post('/api/work/', formData, {
+                            headers: {
+                              'Content-Type': 'multipart/form-data'
+                            }
+                        })
                         .then((response) => {
                             this.loading = false;
                             this.getWorks();
+                            $("#add-work-modal").modal('toggle');
                         })
                         .catch((err) => {
                             this.loading = false;
@@ -275,8 +286,18 @@
                 processFile: function(filelist) {
                     if (!filelist.length) return;
                     this.newWork.image = filelist[0];
-                    console.log(filelist)
                 },
+                getToday: function() {
+                    const toTwoDigits = num => num < 10 ? '0' + num : num;
+                    let today = new Date();
+                    let year = today.getFullYear();
+                    let month = toTwoDigits(today.getMonth() + 1);
+                    let day = toTwoDigits(today.getDate());
+                    return `${year}-${month}-${day}`;
+                },
+                setDefaultValue: function () {
+                    this.newWork.made_date = this.getToday();
+                }
             }
         });
     </script>
