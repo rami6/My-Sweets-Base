@@ -18,7 +18,7 @@
     </div>
 
     <!-- Work detail Modal -->
-    <div class="modal fade" id="detail-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="work-detail-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -42,7 +42,7 @@
               </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-outline-danger" v-on:click="deleteWork(currentWork.id)">Delete</button>
+            <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#delete-work-modal">Delete</button>
             <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" v-on:click="openEditModal()">Edit</button>
           </div>
         </div>
@@ -211,6 +211,30 @@
       </div>
     <!-- End of Edit Work modal -->
 
+    <!-- Delete Work modal -->
+    <div class="modal fade" id="delete-work-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Delete Work</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form v-on:submit.prevent="deleteWork()" class="form-inline">
+            <div class="modal-body">
+              Are you sure to delete "${currentWork.title}"?
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary m-progress" data-dismiss="modal">No</button>
+            <button type="submit" class="btn btn-primary">Yes</button>
+            </div>
+            </form>
+          </div>
+        </div>
+       <div class="loading" v-if="loading===true">Loading&#8230;</div>
+      </div>
+    <!-- End of Delete Work modal -->
 
 </div>
 {% endblock content %}
@@ -256,7 +280,7 @@
                             this.currentWork = response.data;
                             this.currentWork_image = response.data.image;
                             this.getRecipe(id);
-                            $("#detail-modal").modal('show');
+                            $("#work-detail-modal").modal('show');
                             this.loading = false;
                         })
                         .catch((err) => {
@@ -360,12 +384,14 @@
                         })
                     });
                 },
-                deleteWork: function(id) {
+                deleteWork: function() {
                     this.loading = true;
-                    axios.delete(`/api/work/${id}/`)
+                    axios.delete(`/api/work/${this.currentWork.id}/`)
                         .then((response) => {
                             this.loading = false;
                             this.getWorks();
+                            $("#delete-work-modal").modal('toggle');
+                            $("#work-detail-modal").modal('toggle');
                         })
                         .catch((err) => {
                             this.loading = false;
@@ -395,7 +421,7 @@
                     this.newWork.made_date = this.getToday();
                 },
                 openEditModal: function() {
-                    $("#edit-work-modal").modal('show');
+                    $("#work-detail-modal").modal('toggle');
                 },
             }
         });
