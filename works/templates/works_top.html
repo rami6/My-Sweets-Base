@@ -24,10 +24,14 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-3 col-sm-5 bg-white m-1" v-for="work in works" v-on:click="getWork(work.id)">
-            <h4 class="text-center">${work.title}</h4>
-            <img v-bind:src="work.image" class="w-100">
-            <div class="text-right">${work.made_date}</div>
+        <div class="col-md-3 col-sm-5 p-1" v-for="work in works" v-on:click="getWork(work.id)">
+            <div class="bg-white">
+                <div class="p-2">
+                    <h4 class="text-center">${work.title}</h4>
+                    <img v-bind:src="work.image" class="w-100">
+                    <div class="text-right">${work.made_date}</div>
+                </div>
+            </div>
         </div>
     </div>
 
