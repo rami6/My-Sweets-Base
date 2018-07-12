@@ -43,7 +43,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-danger" v-on:click="deleteWork(currentWork.id)">Delete</button>
-            <button type="button" class="btn btn-primary" v-on:click="getWork(currentWork.id)">Edit</button>
+            <button type="button" class="btn btn-primary" v-on:click="openEditModal()">Edit</button>
           </div>
         </div>
       </div>
@@ -69,7 +69,7 @@
                     class="form-control"
                     id="image"
                     accept=".jpg, .jpeg, .png"
-                    @change="processFile($event.target.files)">
+                    @change="processFile($event.target.files, 'add')">
                 </div>
                 <div class="form-group">
                   <label for="title">Title</label>
@@ -127,8 +127,9 @@
         </div>
        <div class="loading" v-if="loading===true">Loading&#8230;</div>
       </div>
-      <!-- End of Add Work modal -->
-        <!-- Edit Work Modal -->
+    <!-- End of Add Work modal -->
+
+    <!-- Edit Work Modal -->
       <div class="modal fade" id="edit-work-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -143,14 +144,14 @@
                 <div class="form-group">
                   <label for="image">Image</label>
                     <div>
-                    <img v-bind:src="currentWork.image" class="w-25 mb-1">
+                    <img v-bind:src="currentWork_image" class="w-25 mb-1">
                     </div>
                   <input
                     type="file"
                     class="form-control"
                     id="image"
                     accept=".jpg, .jpeg, .png"
-                    @change="processFile($event)">
+                    @change="processFile($event.target.files, 'edit')">
                 </div>
                 <div class="form-group">
                   <label for="title">Title</label>
@@ -207,6 +208,7 @@
                 loading: false,
                 currentWork: {},
                 currentWork_recipes: [],
+                currentWork_image: null,
                 newWork: { 'title': null, 'made_date': null, 'note': null, 'image': null },
                 newRecipe:{ 'work_id': null, 'link_title': "Recipe", 'url': null }
             },
@@ -232,6 +234,7 @@
                     axios.get(`/api/work/${id}/`)
                         .then((response) => {
                             this.currentWork = response.data;
+                            this.currentWork_image = response.data.image;
                             this.getRecipe(id);
                             $("#detail-modal").modal('show');
                             this.loading = false;
@@ -255,12 +258,12 @@
                 },
                 addWork: function() {
                     let formData = new FormData();
-                    formData.append("title", this.newWork.title)
+                    formData.append("title", this.newWork.title);
                     if (this.newWork.image) {
-                        formData.append("image", this.newWork.image)
+                        formData.append("image", this.newWork.image);
                     }
-                    formData.append("made_date", this.newWork.made_date)
-                    formData.append("note", this.newWork.note)
+                    formData.append("made_date", this.newWork.made_date);
+                    formData.append("note", this.newWork.note);
 
                     this.loading = true;
                     axios.post('/api/work/', formData, {
@@ -296,17 +299,31 @@
                         })
                 },
                 updateWork: function() {
+                    let formData = new FormData();
+                    formData.append("title", this.currentWork.title);
+                    if (this.currentWork.image) {
+                        formData.append("image", this.currentWork.image);
+                    }
+                    formData.append("made_date", this.currentWork.made_date);
+                    formData.append("note", this.currentWork.note);
+
                     this.loading = true;
-                    axios.put(`/api/work/${this.currentWork.id}/`, this.currentWork)
+                    axios.put(`/api/work/${this.currentWork.id}/`, formData, {
+                            headers: {
+                              'Content-Type': 'multipart/form-data'
+                            }
+                        })
                         .then((response) => {
                             this.loading = false;
                             this.currentWork = response.data;
                             this.getWorks();
+                            $("#edit-work-modal").modal('toggle');
                         })
                         .catch((err) => {
                             this.loading = false;
                             console.log(err);
                         })
+
                 },
                 deleteWork: function(id) {
                     this.loading = true;
@@ -320,9 +337,16 @@
                             console.log(err);
                         })
                 },
-                processFile: function(filelist) {
+                processFile: function(filelist, action) {
                     if (!filelist.length) return;
-                    this.newWork.image = filelist[0];
+
+                    if (action == "add") {
+                        this.newWork.image = filelist[0];
+                    } else if (action == "edit") {
+                        this.currentWork.image = filelist[0];
+                        const data = URL.createObjectURL(filelist[0]);
+                        this.currentWork_image = data;
+                    }
                 },
                 getToday: function() {
                     const toTwoDigits = num => num < 10 ? '0' + num : num;
@@ -334,7 +358,11 @@
                 },
                 setDefaultValue: function () {
                     this.newWork.made_date = this.getToday();
-                }
+                },
+                openEditModal: function() {
+                    $("#detail-modal").modal('toggle');
+                    $("#edit-work-modal").modal('show');
+                },
             }
         });
     </script>
