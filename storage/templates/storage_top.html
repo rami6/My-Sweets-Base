@@ -94,7 +94,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Edit Ingredient</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">Delete Ingredient</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -132,7 +132,7 @@
                 word: null,
                 sortType: "expirationA",
                 storageAPIUrl: null,
-                storageAPIUrls:{ 'expirationA' : '/api/storage/e-a', 'expirationD' : '/api/storage/e-d', 'nameA' : '/api/storage/n-a', 'nameD' : '/api/storage/n-d' },
+                storageAPIUrls:{ 'expirationA': '/api/storage/e-a', 'expirationD': '/api/storage/e-d', 'nameA': '/api/storage/n-a', 'nameD': '/api/storage/n-d' },
                 newIngredient: { 'name': null, 'expiration_date': null },
             },
             mounted: function() {
@@ -140,17 +140,8 @@
             },
             methods: {
                 getIngredients: function() {
-                    if (this.sortType == "expirationA") {
-                        this.storageAPIUrl = this.storageAPIUrls.expirationA
-                    } else if (this.sortType == "expirationD") {
-                        this.storageAPIUrl = this.storageAPIUrls.expirationD
-                    } else if (this.sortType == "nameA") {
-                        this.storageAPIUrl = this.storageAPIUrls.nameA
-                    } else {
-                        this.storageAPIUrl = this.storageAPIUrls.nameD
-                    }
                     this.loading = true;
-                    axios.get(this.storageAPIUrl)
+                    axios.get(this.storageAPIUrls[this.sortType])
                         .then((response) => {
                             this.ingredients = response.data;
                             this.loading = false;
@@ -179,7 +170,7 @@
                 },
                 searchIngredients: function(word) {
                     this.loading = true;
-                    axios.get(this.storageAPIUrl + '/?search=' + word)
+                    axios.get(this.storageAPIUrls[this.sortType] + '/?search=' + word)
                         .then((response) => {
                             this.ingredients = response.data;
                             this.loading = false;
@@ -193,18 +184,14 @@
                     this.loading = true;
                     if (th == "name") {
                         if (this.sortType == "nameA") {
-                            this.storageAPIUrl = this.storageAPIUrls.nameD
                             this.sortType = "nameD"
                         } else {
-                            this.storageAPIUrl = this.storageAPIUrls.nameA
                             this.sortType = "nameA"
                         }
                     } else if (th == "expiration") {
                         if (this.sortType == "expirationA") {
-                            this.storageAPIUrl = this.storageAPIUrls.expirationD
                             this.sortType = "expirationD"
                         } else {
-                            this.storageAPIUrl = this.storageAPIUrls.expirationA
                             this.sortType = "expirationA"
                         }
                     }
