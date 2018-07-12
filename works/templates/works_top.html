@@ -4,7 +4,21 @@
     {% load static %}
     <div id="vue-el">
     <div class="row">
-        <div class="col-11"></div>
+        <div class="col-3">
+            <form v-on:submit.prevent="searchWorks(word)" class="form-inline m-2">
+                <input
+                    type="text"
+                    class="form-control"
+                    id="word"
+                    placeholder="Search"
+                    v-model="word">
+            </form>
+        </div>
+        <div class="col-8">
+            <span>Sort: </span>
+            <button type="button" class="btn btn-info m-2" v-on:click="switchSort('title')">Title</button>
+            <button type="button" class="btn btn-info m-2" v-on:click="switchSort('date')">Made Date</button>
+        </div>
         <div class="col-1">
             <input type="image" src='{% static "image/add-button.png" %}' class="add-button" data-toggle="modal" data-target="#add-work-modal"/>
         </div>
@@ -254,7 +268,10 @@
                 currentWork_recipes: [],
                 currentWork_image: null,
                 newWork: { 'title': null, 'made_date': null, 'note': null, 'image': null },
-                newRecipe:{ 'work_id': null, 'link_title': "Recipe", 'url': null }
+                newRecipe:{ 'work_id': null, 'link_title': "Recipe", 'url': null },
+                word: null,
+                sortType: "dateD",
+                workAPIUrls:{ 'titleA': '/api/works/t-a', 'titleD': '/api/works/t-d', 'dateA': '/api/works/d-a', 'dateD': '/api/works/d-d' },
             },
             mounted: function() {
                 this.getWorks();
@@ -263,7 +280,7 @@
             methods: {
                 getWorks: function() {
                     this.loading = true;
-                    axios.get('/api/work/')
+                    axios.get(this.workAPIUrls[this.sortType])
                         .then((response) => {
                             this.works = response.data;
                             this.loading = false;
@@ -422,6 +439,36 @@
                 },
                 openEditModal: function() {
                     $("#work-detail-modal").modal('toggle');
+                    $("#edit-work-modal").modal('show');
+                },
+                searchWorks: function(word) {
+                    this.loading = true;
+                    axios.get(this.workAPIUrls[this.sortType] + '/?search=' + word)
+                        .then((response) => {
+                            this.works = response.data;
+                            this.loading = false;
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                },
+                switchSort: function(button) {
+                    this.loading = true;
+                    if (button == "title") {
+                        if (this.sortType == "titleA") {
+                            this.sortType = "titleD"
+                        } else {
+                            this.sortType = "titleA"
+                        }
+                    } else if (button == "date") {
+                        if (this.sortType == "dateA") {
+                            this.sortType = "dateD"
+                        } else {
+                            this.sortType = "dateA"
+                        }
+                    }
+                    this.getWorks();
                 },
             }
         });
