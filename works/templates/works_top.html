@@ -43,7 +43,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-danger" v-on:click="deleteWork(currentWork.id)">Delete</button>
-            <button type="button" class="btn btn-primary" v-on:click="openEditModal()">Edit</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" v-on:click="openEditModal()">Edit</button>
           </div>
         </div>
       </div>
@@ -170,6 +170,26 @@
                     class="form-control"
                     id="made_date"
                     v-model="currentWork.made_date">
+                </div>
+                <div v-for="recipe in currentWork_recipes">
+                    <div class="form-group">
+                      <label for="title">Recipe URL</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="title"
+                        placeholder="Enter url"
+                        v-model="recipe.url" >
+                    </div>
+                    <div class="form-group">
+                      <label for="title">Recipe title</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="title"
+                        placeholder="Enter title"
+                        v-model="recipe.link_title" >
+                    </div>
                 </div>
                 <div class="form-group">
                   <label for="note">Note</label>
@@ -301,7 +321,7 @@
                 updateWork: function() {
                     let formData = new FormData();
                     formData.append("title", this.currentWork.title);
-                    if (this.currentWork.image) {
+                    if (this.currentWork.image instanceof File) {
                         formData.append("image", this.currentWork.image);
                     }
                     formData.append("made_date", this.currentWork.made_date);
@@ -316,14 +336,29 @@
                         .then((response) => {
                             this.loading = false;
                             this.currentWork = response.data;
-                            this.getWorks();
+                            this.updateRecipe();
                             $("#edit-work-modal").modal('toggle');
                         })
                         .catch((err) => {
                             this.loading = false;
                             console.log(err);
                         })
-
+                },
+                updateRecipe: function() {
+                    this.loading = true;
+                    this.currentWork_recipes.forEach(function(recipe) {
+                        console.log(recipe);
+                        console.log(recipe.work_id);
+                        axios.put(`/api/recipe/${recipe.id}/`, recipe)
+                        .then((response) => {
+                            this.loading = false;
+                            this.getWorks();
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                    });
                 },
                 deleteWork: function(id) {
                     this.loading = true;
@@ -360,9 +395,15 @@
                     this.newWork.made_date = this.getToday();
                 },
                 openEditModal: function() {
-                    $("#detail-modal").modal('toggle');
                     $("#edit-work-modal").modal('show');
                 },
+            }
+        });
+    </script>
+    <script>
+        $('.modal').on("hidden.bs.modal", function (e) {
+            if ($('.modal:visible').length) {
+                $('body').addClass('modal-open');
             }
         });
     </script>
