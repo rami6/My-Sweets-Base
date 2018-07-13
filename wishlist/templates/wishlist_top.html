@@ -37,13 +37,13 @@
         </div>
     </div>
 
-        {% comment %}
-    <!-- Work detail Modal -->
-    <div class="modal fade" id="work-detail-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+    <!-- Wish detail Modal -->
+    <div class="modal fade" id="wish-detail-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">${currentWork.title}</h5>
+            <h5 class="modal-title" id="exampleModalLabel">${currentWish.title}</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -51,26 +51,27 @@
           <div class="modal-body">
               <div class="container-fluid">
                 <div class="row">
-                  <div class="col-md-4"><img v-bind:src="currentWork.image" class="w-100 "></div>
+                  <div class="col-md-4"><img v-bind:src="currentWish.image" class="w-100 "></div>
                   <div class="col-md-8">
-                    <div v-for="recipe in currentWork_recipes">
+                    <div v-for="recipe in currentWish_recipes">
                         <a v-bind:href="recipe.url">${recipe.link_title}</a>
                     </div>
-                    <div>${currentWork.made_date}</div>
-                    <div>${currentWork.note}</div>
+                    <div>${currentWish.date_created}</div>
+                    <div>${currentWish.note}</div>
                   </div>
                 </div>
               </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#delete-work-modal">Delete</button>
+            <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#delete-wish-modal">Delete</button>
             <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" v-on:click="openEditModal()">Edit</button>
           </div>
         </div>
       </div>
     </div>
-    <!-- End of Work detail Modal -->
-        
+    <!-- End of Wish detail Modal -->
+
+         {% comment %}
     <!-- Add Work Modal -->
       <div class="modal fade" id="add-work-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -315,7 +316,7 @@
                 },
                 getRecipe: function(wish_id) {
                     this.loading = true;
-                    axios.get('/api/wishes/recipe-by-wish/' + wish_id)
+                    axios.get('/api/wish-list/recipe-by-wish/' + wish_id)
                         .then((response) => {
                             this.currentWish_recipes = response.data;
                             this.loading = false;

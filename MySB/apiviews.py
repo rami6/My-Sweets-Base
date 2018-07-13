@@ -101,7 +101,7 @@ class WishlistSearchAPIView_dateD(generics.ListAPIView):
 
 
 class WishRecipeListAPIView(generics.ListAPIView):
-    serializer_class = RecipeSerializer
+    serializer_class = WishRecipeSerializer
 
     def get_queryset(self):
         wish_related = self.kwargs['wish_id']
