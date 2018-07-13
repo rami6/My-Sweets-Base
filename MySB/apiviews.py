@@ -73,21 +73,21 @@ class RecipeListAPIView(generics.ListAPIView):
 
 
 class WishlistSearchAPIView_titleA(generics.ListAPIView):
-    queryset = Wish.objects.all().order_by('title', 'made_date')
+    queryset = Wish.objects.all().order_by('title', 'created_at')
     serializer_class = WishSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('title',)
 
 
 class WishlistSearchAPIView_titleD(generics.ListAPIView):
-    queryset = Wish.objects.all().order_by('-title', 'made_date')
+    queryset = Wish.objects.all().order_by('-title', 'created_at')
     serializer_class = WishSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('title',)
 
 
 class WishlistSearchAPIView_dateA(generics.ListAPIView):
-    queryset = Wish.objects.all().order_by('made_date', 'title')
+    queryset = Wish.objects.all().order_by('created_at', 'title')
     serializer_class = WishSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('title',)

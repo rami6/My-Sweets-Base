@@ -4,9 +4,8 @@
     {% load static %}
     <div id="vue-el">
     <div class="row">
-        {% comment %}
         <div class="col-3">
-            <form v-on:submit.prevent="searchWorks(word)" class="form-inline m-2">
+            <form v-on:submit.prevent="searchWishes(word)" class="form-inline m-2">
                 <input
                     type="text"
                     class="form-control"
@@ -18,12 +17,11 @@
         <div class="col-8">
             <span>Sort: </span>
             <button type="button" class="btn btn-info m-2" v-on:click="switchSort('title')">Title</button>
-            <button type="button" class="btn btn-info m-2" v-on:click="switchSort('date')">Made Date</button>
+            <button type="button" class="btn btn-info m-2" v-on:click="switchSort('date')">Added Date</button>
         </div>
         <div class="col-1">
-            <input type="image" src='{% static "image/add-button.png" %}' class="add-button" data-toggle="modal" data-target="#add-work-modal"/>
+            <input type="image" src='{% static "image/add-button.png" %}' class="add-button" data-toggle="modal" data-target="#add-wish-modal"/>
         </div>
-        {% endcomment %}
     </div>
     <div class="row">
         <div class="col-md-3 col-sm-5 p-1" v-for="wish in wishes" v-on:click="getWish(wish.id)">
