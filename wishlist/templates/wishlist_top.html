@@ -222,20 +222,21 @@
        <div class="loading" v-if="loading===true">Loading&#8230;</div>
       </div>
     <!-- End of Edit Work modal -->
+{% endcomment %}
 
-    <!-- Delete Work modal -->
-    <div class="modal fade" id="delete-work-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <!-- Delete Wish modal -->
+    <div class="modal fade" id="delete-wish-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Delete Work</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Delete Wish</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form v-on:submit.prevent="deleteWork()" class="form-inline">
+            <form v-on:submit.prevent="deleteWish()" class="form-inline">
             <div class="modal-body">
-              Are you sure to delete "${currentWork.title}"?
+              Are you sure to delete "${currentWish.title}"?
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary m-progress" data-dismiss="modal">No</button>
@@ -246,8 +247,8 @@
         </div>
        <div class="loading" v-if="loading===true">Loading&#8230;</div>
       </div>
-    <!-- End of Delete Work modal -->
-    {% endcomment %}
+    <!-- End of Delete Wish modal -->
+
 </div>
 {% endblock content %}
 
