@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'works',
     'storage',
+    'wishlist',
     'rest_framework',
     'django_filters'
 ]

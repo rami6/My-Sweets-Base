@@ -1,0 +1,490 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% load static %}
+    <div id="vue-el">
+    <div class="row">
+        {% comment %}
+        <div class="col-3">
+            <form v-on:submit.prevent="searchWorks(word)" class="form-inline m-2">
+                <input
+                    type="text"
+                    class="form-control"
+                    id="word"
+                    placeholder="Search"
+                    v-model="word">
+            </form>
+        </div>
+        <div class="col-8">
+            <span>Sort: </span>
+            <button type="button" class="btn btn-info m-2" v-on:click="switchSort('title')">Title</button>
+            <button type="button" class="btn btn-info m-2" v-on:click="switchSort('date')">Made Date</button>
+        </div>
+        <div class="col-1">
+            <input type="image" src='{% static "image/add-button.png" %}' class="add-button" data-toggle="modal" data-target="#add-work-modal"/>
+        </div>
+        {% endcomment %}
+    </div>
+    <div class="row">
+        <div class="col-md-3 col-sm-5 p-1" v-for="wish in wishes" v-on:click="getWish(wish.id)">
+            <div class="bg-white">
+                <div class="p-2">
+                    <h4 class="text-center">${wish.title}</h4>
+                    <img v-bind:src="wish.image" class="w-100">
+                    <div class="text-right">${wish.date_created}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        {% comment %}
+    <!-- Work detail Modal -->
+    <div class="modal fade" id="work-detail-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">${currentWork.title}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-md-4"><img v-bind:src="currentWork.image" class="w-100 "></div>
+                  <div class="col-md-8">
+                    <div v-for="recipe in currentWork_recipes">
+                        <a v-bind:href="recipe.url">${recipe.link_title}</a>
+                    </div>
+                    <div>${currentWork.made_date}</div>
+                    <div>${currentWork.note}</div>
+                  </div>
+                </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#delete-work-modal">Delete</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" v-on:click="openEditModal()">Edit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of Work detail Modal -->
+        
+    <!-- Add Work Modal -->
+      <div class="modal fade" id="add-work-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">ADD Work</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form enctype="multipart/form-data" v-on:submit.prevent="addWork()">
+            <div class="modal-body">
+                <div class="form-group">
+                  <label for="image">Image</label>
+                  <input
+                    type="file"
+                    class="form-control"
+                    id="image"
+                    accept=".jpg, .jpeg, .png"
+                    @change="processFile($event.target.files, 'add')">
+                </div>
+                <div class="form-group">
+                  <label for="title">Title</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="title"
+                    placeholder="Enter title"
+                    v-model="newWork.title"
+                    required="required" >
+                </div>
+                <div class="form-group">
+                  <label for="made_date">Date</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="made_date"
+                    v-model="newWork.made_date"
+                    required="required">
+                </div>
+                <div class="form-group">
+                  <label for="title">Recipe URL</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="title"
+                    placeholder="Enter url"
+                    v-model="newRecipe.url" >
+                </div>
+                <div class="form-group">
+                  <label for="title">Recipe title</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="title"
+                    placeholder="Enter title"
+                    v-model="newRecipe.link_title" >
+                </div>
+                <div class="form-group">
+                  <label for="note">Note</label>
+                  <textarea
+                    class="form-control"
+                    id="note"
+                    placeholder="Enter Note"
+                    v-model="newWork.note"
+                    rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+            </form>
+          </div>
+        </div>
+       <div class="loading" v-if="loading===true">Loading&#8230;</div>
+      </div>
+    <!-- End of Add Work modal -->
+
+    <!-- Edit Work Modal -->
+      <div class="modal fade" id="edit-work-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">EDIT Work</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form v-on:submit.prevent="updateWork()">
+            <div class="modal-body">
+                <div class="form-group">
+                  <label for="image">Image</label>
+                    <div>
+                    <img v-bind:src="currentWork_image" class="w-25 mb-1">
+                    </div>
+                  <input
+                    type="file"
+                    class="form-control"
+                    id="image"
+                    accept=".jpg, .jpeg, .png"
+                    @change="processFile($event.target.files, 'edit')">
+                </div>
+                <div class="form-group">
+                  <label for="title">Title</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="title"
+                    placeholder="Enter title"
+                    v-model="currentWork.title"
+                    required="required" >
+                </div>
+                <div class="form-group">
+                  <label for="made_date">Date</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="made_date"
+                    v-model="currentWork.made_date"
+                    required="required">
+                </div>
+                <div v-for="recipe in currentWork_recipes">
+                    <div class="form-group">
+                      <label for="title">Recipe URL</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="title"
+                        placeholder="Enter url"
+                        v-model="recipe.url" >
+                    </div>
+                    <div class="form-group">
+                      <label for="title">Recipe title</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="title"
+                        placeholder="Enter title"
+                        v-model="recipe.link_title" >
+                    </div>
+                </div>
+                <div class="form-group">
+                  <label for="note">Note</label>
+                  <textarea
+                    class="form-control"
+                    id="note"
+                    placeholder="Enter Note"
+                    v-model="currentWork.note"
+                    rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+            </form>
+          </div>
+        </div>
+       <div class="loading" v-if="loading===true">Loading&#8230;</div>
+      </div>
+    <!-- End of Edit Work modal -->
+
+    <!-- Delete Work modal -->
+    <div class="modal fade" id="delete-work-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Delete Work</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form v-on:submit.prevent="deleteWork()" class="form-inline">
+            <div class="modal-body">
+              Are you sure to delete "${currentWork.title}"?
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary m-progress" data-dismiss="modal">No</button>
+            <button type="submit" class="btn btn-primary">Yes</button>
+            </div>
+            </form>
+          </div>
+        </div>
+       <div class="loading" v-if="loading===true">Loading&#8230;</div>
+      </div>
+    <!-- End of Delete Work modal -->
+    {% endcomment %}
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+    <script type="text/javascript">
+        axios.defaults.headers.common['X-CSRFToken'] = "{{ csrf_token }}";
+        axios.defaults.headers.post['Content-Type'] = 'application/json';
+
+        new Vue({
+            el: '#vue-el',
+            delimiters: ['${','}'],
+            data: {
+                wishes: [],
+                loading: false,
+                currentWish: {},
+                currentWish_recipes: [],
+                currentWish_image: null,
+                newWish: { 'title': null, 'created_at': null, 'note': null, 'image': null },
+                newRecipe:{ 'wish_id': null, 'link_title': "Recipe", 'url': null },
+                word: null,
+                sortType: "dateD",
+                wishAPIUrls:{ 'titleA': '/api/wish-list/t-a', 'titleD': '/api/wish-list/t-d', 'dateA': '/api/wish-list/d-a', 'dateD': '/api/wish-list/d-d' },
+            },
+            mounted: function() {
+                this.getWishes();
+                this.setDefaultValue();
+            },
+            methods: {
+                getWishes: function() {
+                    this.loading = true;
+                    axios.get(this.wishAPIUrls[this.sortType])
+                        .then((response) => {
+                            this.wishes = response.data;
+                            this.loading = false;
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                },
+                getWish: function(id) {
+                    this.loading = true;
+                    axios.get(`/api/wish/${id}/`)
+                        .then((response) => {
+                            this.currentWish = response.data;
+                            this.currentWish_image = response.data.image;
+                            this.getRecipe(id);
+                            $("#wish-detail-modal").modal('show');
+                            this.loading = false;
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                },
+                getRecipe: function(wish_id) {
+                    this.loading = true;
+                    axios.get('/api/wishes/recipe-by-wish/' + wish_id)
+                        .then((response) => {
+                            this.currentWish_recipes = response.data;
+                            this.loading = false;
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                },
+                addWish: function() {
+                    let formData = new FormData();
+                    formData.append("title", this.newWish.title);
+                    if (this.newWish.image) {
+                        formData.append("image", this.newWish.image);
+                    }
+                    formData.append("note", this.newWish.note);
+
+                    this.loading = true;
+                    axios.post('/api/wish/', formData, {
+                            headers: {
+                              'Content-Type': 'multipart/form-data'
+                            }
+                        })
+                        .then((response) => {
+                            this.loading = false;
+                            if (this.newRecipe.url) {
+                                this.newRecipe.wish_id = response.data.id;
+                                this.addRecipe();
+                            } else {
+                                this.getWishs();
+                            }
+                            $("#add-wish-modal").modal('toggle');
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                },
+                addRecipe: function() {
+                    this.loading = true;
+                    axios.post('/api/recipe/', this.newRecipe)
+                        .then((response) => {
+                            this.loading = false;
+                            this.getWishs();
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                },
+                updateWish: function() {
+                    let formData = new FormData();
+                    formData.append("title", this.currentWish.title);
+                    if (this.currentWish.image instanceof File) {
+                        formData.append("image", this.currentWish.image);
+                    }
+                    formData.append("note", this.currentWish.note);
+
+                    this.loading = true;
+                    axios.put(`/api/wish/${this.currentWish.id}/`, formData, {
+                            headers: {
+                              'Content-Type': 'multipart/form-data'
+                            }
+                        })
+                        .then((response) => {
+                            this.loading = false;
+                            this.currentWish = response.data;
+                            this.updateRecipe();
+                            $("#edit-wish-modal").modal('toggle');
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                },
+                updateRecipe: function() {
+                    this.loading = true;
+                    this.currentWish_recipes.forEach(function(recipe) {
+                        console.log(recipe);
+                        console.log(recipe.wish_id);
+                        axios.put(`/api/recipe/${recipe.id}/`, recipe)
+                        .then((response) => {
+                            this.loading = false;
+                            this.getWishes();
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                    });
+                    this.getWishes();
+                },
+                deleteWish: function() {
+                    this.loading = true;
+                    axios.delete(`/api/wish/${this.currentWish.id}/`)
+                        .then((response) => {
+                            this.loading = false;
+                            this.getWishs();
+                            $("#delete-wish-modal").modal('toggle');
+                            $("#wish-detail-modal").modal('toggle');
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                },
+                processFile: function(filelist, action) {
+                    if (!filelist.length) return;
+
+                    if (action == "add") {
+                        this.newWish.image = filelist[0];
+                    } else if (action == "edit") {
+                        this.currentWish.image = filelist[0];
+                        const data = URL.createObjectURL(filelist[0]);
+                        this.currentWish_image = data;
+                    }
+                },
+                getToday: function() {
+                    const toTwoDigits = num => num < 10 ? '0' + num : num;
+                    let today = new Date();
+                    let year = today.getFullYear();
+                    let month = toTwoDigits(today.getMonth() + 1);
+                    let day = toTwoDigits(today.getDate());
+                    return `${year}-${month}-${day}`;
+                },
+                setDefaultValue: function () {
+                    this.newWish.made_date = this.getToday();
+                },
+                openEditModal: function() {
+                    $("#wish-detail-modal").modal('toggle');
+                    $("#edit-wish-modal").modal('show');
+                },
+                searchWishes: function(word) {
+                    this.loading = true;
+                    axios.get(this.wishAPIUrls[this.sortType] + '/?search=' + word)
+                        .then((response) => {
+                            this.wishes = response.data;
+                            this.loading = false;
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                },
+                switchSort: function(button) {
+                    this.loading = true;
+                    if (button == "title") {
+                        if (this.sortType == "titleA") {
+                            this.sortType = "titleD"
+                        } else {
+                            this.sortType = "titleA"
+                        }
+                    } else if (button == "date") {
+                        if (this.sortType == "dateA") {
+                            this.sortType = "dateD"
+                        } else {
+                            this.sortType = "dateA"
+                        }
+                    }
+                    this.getWishes();
+                },
+            }
+        });
+    </script>
+    <script>
+        $('.modal').on("hidden.bs.modal", function (e) {
+            if ($('.modal:visible').length) {
+                $('body').addClass('modal-open');
+            }
+        });
+    </script>
+{% endblock extra_js %}
