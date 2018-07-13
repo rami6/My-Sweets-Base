@@ -69,18 +69,17 @@
     </div>
     <!-- End of Wish detail Modal -->
 
-         {% comment %}
-    <!-- Add Work Modal -->
-      <div class="modal fade" id="add-work-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <!-- Add Wish Modal -->
+      <div class="modal fade" id="add-wish-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">ADD Work</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">ADD Wish</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form enctype="multipart/form-data" v-on:submit.prevent="addWork()">
+            <form enctype="multipart/form-data" v-on:submit.prevent="addWish()">
             <div class="modal-body">
                 <div class="form-group">
                   <label for="image">Image</label>
@@ -98,17 +97,8 @@
                     class="form-control"
                     id="title"
                     placeholder="Enter title"
-                    v-model="newWork.title"
+                    v-model="newWish.title"
                     required="required" >
-                </div>
-                <div class="form-group">
-                  <label for="made_date">Date</label>
-                  <input
-                    type="date"
-                    class="form-control"
-                    id="made_date"
-                    v-model="newWork.made_date"
-                    required="required">
                 </div>
                 <div class="form-group">
                   <label for="title">Recipe URL</label>
@@ -134,7 +124,7 @@
                     class="form-control"
                     id="note"
                     placeholder="Enter Note"
-                    v-model="newWork.note"
+                    v-model="newWish.note"
                     rows="3"></textarea>
                 </div>
             </div>
@@ -147,8 +137,9 @@
         </div>
        <div class="loading" v-if="loading===true">Loading&#8230;</div>
       </div>
-    <!-- End of Add Work modal -->
+    <!-- End of Add Wish modal -->
 
+         {% comment %}
     <!-- Edit Work Modal -->
       <div class="modal fade" id="edit-work-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -274,7 +265,7 @@
                 currentWish: {},
                 currentWish_recipes: [],
                 currentWish_image: null,
-                newWish: { 'title': null, 'created_at': null, 'note': null, 'image': null },
+                newWish: { 'title': null, 'note': null, 'image': null },
                 newRecipe:{ 'wish_id': null, 'link_title': "Recipe", 'url': null },
                 word: null,
                 sortType: "dateD",
@@ -344,7 +335,7 @@
                                 this.newRecipe.wish_id = response.data.id;
                                 this.addRecipe();
                             } else {
-                                this.getWishs();
+                                this.getWishes();
                             }
                             $("#add-wish-modal").modal('toggle');
                         })
@@ -355,10 +346,10 @@
                 },
                 addRecipe: function() {
                     this.loading = true;
-                    axios.post('/api/recipe/', this.newRecipe)
+                    axios.post('/api/wish-recipe/', this.newRecipe)
                         .then((response) => {
                             this.loading = false;
-                            this.getWishs();
+                            this.getWishes();
                         })
                         .catch((err) => {
                             this.loading = false;
@@ -412,7 +403,7 @@
                     axios.delete(`/api/wish/${this.currentWish.id}/`)
                         .then((response) => {
                             this.loading = false;
-                            this.getWishs();
+                            this.getWishes();
                             $("#delete-wish-modal").modal('toggle');
                             $("#wish-detail-modal").modal('toggle');
                         })
