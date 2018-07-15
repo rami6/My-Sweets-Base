@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+<meta charset="utf-8">
+<title>{% block head_title %}My Sweets Base{% endblock head_title %}</title>
+
+{% block extra_meta %}{% endblock extra_meta %}
+
+{% include 'snippets/css.html' %}
+</head>
+<body class="p-0 m-0">
+{% include 'snippets/nav.html' %}
+
+<div class="container-fluid">
+{% block content %}{% endblock content %}
+</div>
+
+{% include 'snippets/js.html' %}
+{% block extra_js %}{% endblock extra_js %}
+
+</body>
+</html>
