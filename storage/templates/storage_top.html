@@ -20,7 +20,8 @@
                 type="date"
                 class="form-control"
                 id="expiration_date"
-                v-model="newIngredient.expiration_date">
+                v-model="newIngredient.expiration_date"
+                required="required">
         </div>
         <button type="submit" class="btn btn-dark ml-1">Add</button>
     </form>
@@ -137,6 +138,7 @@
             },
             mounted: function() {
                 this.getIngredients();
+                this.setDefaultValue();
             },
             methods: {
                 getIngredients: function() {
@@ -236,6 +238,17 @@
                             this.loading = false;
                             console.log(err);
                         })
+                },
+                getToday: function() {
+                    const toTwoDigits = num => num < 10 ? '0' + num : num;
+                    let today = new Date();
+                    let year = today.getFullYear();
+                    let month = toTwoDigits(today.getMonth() + 1);
+                    let day = toTwoDigits(today.getDate());
+                    return `${year}-${month}-${day}`;
+                },
+                setDefaultValue: function () {
+                    this.newIngredient.expiration_date = this.getToday();
                 },
             }
         })
