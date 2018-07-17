@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'works',
     'storage',
     'wishlist',
+    'dashboard',
     'rest_framework',
     'django_filters'
 ]
