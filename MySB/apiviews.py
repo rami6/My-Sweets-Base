@@ -9,31 +9,39 @@ from wishlist.serializers import WishRecipeSerializer, WishSerializer
 
 
 class StorageSearchAPIView_expirationA(generics.ListAPIView):
-    queryset = Ingredient.objects.all().order_by('expiration_date', 'name')
     serializer_class = IngredientSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name',)
+
+    def get_queryset(self):
+        return Ingredient.objects.filter(owner=self.request.user).order_by('expiration_date', 'name')
 
 
 class StorageSearchAPIView_expirationD(generics.ListAPIView):
-    queryset = Ingredient.objects.all().order_by('-expiration_date', 'name')
     serializer_class = IngredientSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name',)
+
+    def get_queryset(self):
+        return Ingredient.objects.filter(owner=self.request.user).order_by('-expiration_date', 'name')
 
 
 class StorageSearchAPIView_nameA(generics.ListAPIView):
-    queryset = Ingredient.objects.all().order_by('name', 'expiration_date')
     serializer_class = IngredientSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name',)
+
+    def get_queryset(self):
+        return Ingredient.objects.filter(owner=self.request.user).order_by('name', 'expiration_date')
 
 
 class StorageSearchAPIView_nameD(generics.ListAPIView):
-    queryset = Ingredient.objects.all().order_by('-name', 'expiration_date')
     serializer_class = IngredientSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name',)
+
+    def get_queryset(self):
+        return Ingredient.objects.filter(owner=self.request.user).order_by('-name', 'expiration_date')
 
 
 class WorksSearchAPIView_titleA(generics.ListAPIView):
