@@ -6,9 +6,11 @@ from django.conf.urls.static import static
 from .routers import router
 from .apiviews import StorageSearchAPIView_expirationA, StorageSearchAPIView_expirationD, StorageSearchAPIView_nameA, StorageSearchAPIView_nameD, RecipeListAPIView, WorksSearchAPIView_titleA, WorksSearchAPIView_titleD, WorksSearchAPIView_dateA, WorksSearchAPIView_dateD, WishRecipeListAPIView, WishlistSearchAPIView_titleA, WishlistSearchAPIView_titleD, WishlistSearchAPIView_dateA, WishlistSearchAPIView_dateD
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('', TemplateView.as_view(template_name='landing.html'), name='landing'),
+    path('home/', TemplateView.as_view(template_name='home.html'), name='home'),
     path('works/', include('works.urls')),
     path('storage/', include('storage.urls')),
     path('wish-list/', include('wishlist.urls')),
