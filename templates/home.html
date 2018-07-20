@@ -1000,7 +1000,7 @@
             methods: {
                 getItems: function () {
                     this.loading = true;
-                    axios.get('api/shopitem/')
+                    axios.get('/api/shopitem/')
                         .then((response) => {
                             this.items = response.data;
                             this.loading = false;

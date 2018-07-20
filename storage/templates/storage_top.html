@@ -213,7 +213,6 @@
                 },
                 updateIngredient: function() {
                     this.loading = true;
-                    console.log(this.currentIngredient)
                     axios.put(`/api/ingredient/${this.currentIngredient.id}/`, this.currentIngredient)
                         .then((response) => {
                             this.loading = false;
