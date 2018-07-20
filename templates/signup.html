@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form method="post" class="m-2">
+        {% csrf_token %}
+        {% for field in form %}
+          <p>
+            {{ field.label_tag }} {{ field }}
+            {% for error in field.errors %}
+              <p style="color: red">{{ error }}</p>
+            {% endfor %}
+          </p>
+    {% endfor %}
+        <button type="submit" class="btn m-2">Sign Up</button>
+    </form>
+    <a href="/">Back to the top page</a>
+{% endblock content %}

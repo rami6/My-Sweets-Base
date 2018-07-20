@@ -142,4 +142,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "MySB/media")
 LOGIN_EXEMPT_URLS = (
     r'^$',
     r'^admin/.*',
+    r'^signup/$',
+    r'^logout/$',
 )
+
+LOGIN_REDIRECT_URL = '/home/'
+
+LOGIN_URL = '/'

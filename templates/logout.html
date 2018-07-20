@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h4>Logout</h4>
+    <p>redirecting to top page...</p>
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+    function redirect(){
+       window.location.href = "/";
+    }
+    setTimeout(redirect, 2000);
+</script>
+{% endblock extra_js %}
