@@ -3,6 +3,8 @@ from .models import Work, Recipe
 
 
 class WorkSerializer(serializers.ModelSerializer):
+    owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
     class Meta:
         model = Work
         fields = '__all__'
