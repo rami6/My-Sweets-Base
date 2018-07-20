@@ -4,5 +4,7 @@ from .serializers import ShopItemSerializers
 
 
 class ShopItemViewSet(viewsets.ModelViewSet):
-    queryset = ShopItem.objects.all()
     serializer_class = ShopItemSerializers
+
+    def get_queryset(self):
+        return ShopItem.objects.filter(owner=self.request.user)

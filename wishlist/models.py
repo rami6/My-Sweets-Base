@@ -9,6 +9,7 @@ from .utilities.utils import rotate_image
 
 
 class Wish(models.Model):
+    owner       = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     title       = models.CharField(max_length=120)
     created_at  = models.DateTimeField(auto_now_add=True)
     note        = models.TextField(max_length=2000, null=True, blank=True)
@@ -30,6 +31,7 @@ def update_image(sender, instance, **kwargs):
 
 
 class WishRecipe(models.Model):
+    owner       = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     wish_id     = models.ForeignKey('Wish', on_delete=models.CASCADE)
     url         = models.URLField()
     link_title  = models.CharField(max_length=120, default="Recipe")

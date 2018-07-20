@@ -45,31 +45,38 @@ class StorageSearchAPIView_nameD(generics.ListAPIView):
 
 
 class WorksSearchAPIView_titleA(generics.ListAPIView):
-    queryset = Work.objects.all().order_by('title', 'made_date')
     serializer_class = WorkSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('title',)
+
+    def get_queryset(self):
+        return Work.objects.filter(owner=self.request.user).order_by('title', 'made_date')
 
 
 class WorksSearchAPIView_titleD(generics.ListAPIView):
-    queryset = Work.objects.all().order_by('-title', 'made_date')
     serializer_class = WorkSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('title',)
 
+    def get_queryset(self):
+        return Work.objects.filter(owner=self.request.user).order_by('-title', 'made_date')
 
 class WorksSearchAPIView_dateA(generics.ListAPIView):
-    queryset = Work.objects.all().order_by('made_date', 'title')
     serializer_class = WorkSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('title',)
+
+    def get_queryset(self):
+        return Work.objects.filter(owner=self.request.user).order_by('made_date', 'title')
 
 
 class WorksSearchAPIView_dateD(generics.ListAPIView):
-    queryset = Work.objects.all().order_by('-made_date', 'title')
     serializer_class = WorkSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('title',)
+
+    def get_queryset(self):
+        return Work.objects.filter(owner=self.request.user).order_by('-made_date', 'title')
 
 
 class RecipeListAPIView(generics.ListAPIView):
@@ -81,31 +88,39 @@ class RecipeListAPIView(generics.ListAPIView):
 
 
 class WishlistSearchAPIView_titleA(generics.ListAPIView):
-    queryset = Wish.objects.all().order_by('title', 'created_at')
     serializer_class = WishSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('title',)
+
+    def get_queryset(self):
+        return Wish.objects.filter(owner=self.request.user).order_by('title', 'created_at')
 
 
 class WishlistSearchAPIView_titleD(generics.ListAPIView):
-    queryset = Wish.objects.all().order_by('-title', 'created_at')
     serializer_class = WishSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('title',)
+
+    def get_queryset(self):
+        return Wish.objects.filter(owner=self.request.user).order_by('-title', 'created_at')
 
 
 class WishlistSearchAPIView_dateA(generics.ListAPIView):
-    queryset = Wish.objects.all().order_by('created_at', 'title')
     serializer_class = WishSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('title',)
+
+    def get_queryset(self):
+        return Wish.objects.filter(owner=self.request.user).order_by('created_at', 'title')
 
 
 class WishlistSearchAPIView_dateD(generics.ListAPIView):
-    queryset = Wish.objects.all().order_by('-created_at', 'title')
     serializer_class = WishSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('title',)
+
+    def get_queryset(self):
+        return Wish.objects.filter(owner=self.request.user).order_by('-created_at', 'title')
 
 
 class WishRecipeListAPIView(generics.ListAPIView):

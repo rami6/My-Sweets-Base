@@ -10,6 +10,7 @@ import datetime
 
 
 class Work(models.Model):
+    owner       = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     title       = models.CharField(max_length=120)
     made_date   = models.DateField(default=datetime.date.today, null=True, blank=True)
     note        = models.TextField(max_length=2000, null=True, blank=True)
@@ -26,6 +27,7 @@ def update_image(sender, instance, **kwargs):
 
 
 class Recipe(models.Model):
+    owner       = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     work_id     = models.ForeignKey('Work', on_delete=models.CASCADE)
     url         = models.URLField()
     link_title  = models.CharField(max_length=120, default="Recipe")
