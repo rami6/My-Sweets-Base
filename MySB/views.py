@@ -18,7 +18,7 @@ def signup(request):
     else:
         form = SignUpForm()
         args = {'form': form}
-        return render(request, 'signup.html', args)
+        return render(request, 'accounts/signup.html', args)
 
 
 def edit_account(request):
@@ -30,7 +30,7 @@ def edit_account(request):
     else:
         form = AccountEditForm(instance=request.user)
         args = {'form': form}
-        return render(request, 'account_settings.html', args)
+        return render(request, 'accounts/account_edit.html', args)
 
 
 def change_password(request):
@@ -45,4 +45,4 @@ def change_password(request):
     else:
         form = PasswordChangeForm(user=request.user)
         args = {'form': form}
-        return render(request, 'change_password.html', args)
+        return render(request, 'accounts/change_password.html', args)
