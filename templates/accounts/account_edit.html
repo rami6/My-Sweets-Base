@@ -1,10 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h4>Settings</h4>
+    <h4 class="m-2">Settings</h4>
     <form method="post" class="m-2">
         {% csrf_token %}
-        {{ form.as_p }}
+        {% for field in form %}
+          <p>
+            {% if field.label != "Password" %}
+                {{ field.label_tag }} {{ field }}
+                {% for error in field.errors %}
+                  <p style="color: red">{{ error }}</p>
+                {% endfor %}
+            {% endif %}
+          </p>
+        {% endfor %}
         <button type="submit" class="btn m-2">Save Changes</button>
     </form>
+    <p class="ml-2 mt-5">Change password? Click <a href="/change-password/">here</a></p>
 {% endblock content %}
