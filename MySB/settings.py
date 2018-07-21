@@ -144,8 +144,12 @@ LOGIN_EXEMPT_URLS = (
     r'^admin/.*',
     r'^signup/$',
     r'^logout/$',
+    r'^reset-password/.*$',
 )
 
 LOGIN_REDIRECT_URL = '/home/'
 
 LOGIN_URL = '/'
+
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025

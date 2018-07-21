@@ -23,7 +23,8 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="setting-menu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-cog"></i></a>
                     <ul class="dropdown-menu dropdown-menu-right">
-                        <li><a class="dropdown-item" href="#">Account settings</a></li>
+                        <li class="dropdown-item font-weight-bold" style="pointer-events: none;">{{ request.user.username }}</li>
+                        <li><a class="dropdown-item" href="/settings">Edit Account</a></li>
                         <li><a class="dropdown-item" href="/logout">Logout</a></li>
                     </ul>
                 </li>
