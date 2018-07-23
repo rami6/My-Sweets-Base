@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h4 class="m-2">Your account successfully disabled.</h4>
+    <p>redirecting to the top page...</p>
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+    function redirect(){
+       window.location.href = "/";
+    }
+    setTimeout(redirect, 2000);
+</script>
+{% endblock extra_js %}
