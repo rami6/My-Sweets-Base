@@ -448,9 +448,8 @@
                 type="text"
                 class="form-control"
                 id="amount"
-                placeholder="Amount"
-                v-model="newItem.amount"
-                required="required">
+                placeholder="(Amount)"
+                v-model="newItem.amount">
             <button type="submit" class="btn btn-dark ml-1">Add</button>
         </form>
          <table class="table table-sm">
@@ -466,7 +465,7 @@
                 <tr v-for="item in items">
                     <td style="width: 50px"><input type="checkbox" v-model="item.is_bought" v-on:click="checkItem(item.id)"></td>
                     <td v-on:dblclick="getItem(item.id, 'edit')" style="width: 230px">${item.name}</td>
-                    <td v-on:dblclick="getItem(item.id, 'edit')" style="width: 200px">${item.amount}</td>
+                    <td v-on:dblclick="getItem(item.id, 'edit')" style="width: 200px"><span v-if="item.amount">${item.amount}</span></td>
                     <td v-on:click="getItem(item.id, 'delete')" class="text-secondary" style="width: 50px">&times;</td>
                 </tr>
             </tbody>
@@ -489,15 +488,15 @@
                     type="text"
                     class="form-control"
                     id="name"
-                    placeholder="Enter name"
+                    placeholder="Name"
                     v-model="currentItem.name"
                     required="required" >
                   <input
                     type="text"
                     class="form-control"
                     id="amount"
-                    v-model="currentItem.amount"
-                    required="required">
+                    placeholder="(Amount)"
+                    v-model="currentItem.amount">
                 </div>
                 <div class="modal-footer">
                 <button type="submit" class="btn btn-primary" >Save changes</button>
