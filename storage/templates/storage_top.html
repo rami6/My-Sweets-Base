@@ -20,8 +20,7 @@
                 type="date"
                 class="form-control"
                 id="expiration_date"
-                v-model="newIngredient.expiration_date"
-                required="required">
+                v-model="newIngredient.expiration_date">
         </div>
         <button type="submit" class="btn btn-dark ml-1">Add</button>
     </form>
@@ -45,7 +44,7 @@
         <tbody>
             <tr v-for="ingredient in ingredients">
                 <td v-on:dblclick="getIngredient(ingredient.id, 'edit')">${ingredient.name}</td>
-                <td v-on:dblclick="getIngredient(ingredient.id, 'edit')">${ingredient.expiration_date}</td>
+                <td v-on:dblclick="getIngredient(ingredient.id, 'edit')"><span v-if="ingredient.expiration_date">${ingredient.expiration_date}</span></td>
                 <td>
                 {% load static %}
                 <img v-if="ingredient.is_expired" src='{% static "image/caution-mark.png" %}' alt="expired" class="float-left" height="23px" />
@@ -200,6 +199,9 @@
                     this.getIngredients();
                 },
                 addIngredient: function() {
+                    if (this.newIngredient.expiration_date == "") {
+                        this.newIngredient.expiration_date = null;
+                    }
                     this.loading = true;
                     axios.post('/api/ingredient/', this.newIngredient)
                         .then((response) => {
@@ -213,6 +215,9 @@
                         })
                 },
                 updateIngredient: function() {
+                    if (this.currentIngredient.expiration_date == "") {
+                        this.currentIngredient.expiration_date = null;
+                    }
                     this.loading = true;
                     axios.put(`/api/ingredient/${this.currentIngredient.id}/`, this.currentIngredient)
                         .then((response) => {

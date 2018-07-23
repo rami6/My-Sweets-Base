@@ -361,7 +361,7 @@
                     <tbody style="overflow-y: scroll; height: 250px; display: block;">
                         <tr v-for="ingredient in ingredients">
                             <td v-on:dblclick="getIngredient(ingredient.id, 'edit')" style="width: 230px;">${ingredient.name}</td>
-                            <td v-on:dblclick="getIngredient(ingredient.id, 'edit')" style="width: 200px;">${ingredient.expiration_date}</td>
+                            <td v-on:dblclick="getIngredient(ingredient.id, 'edit')" style="width: 200px;"><span v-if="ingredient.expiration_date">${ingredient.expiration_date}</span></td>
                             <td style="width: 50px;">
                             {% load static %}
                             <img v-if="ingredient.is_expired" src='{% static "image/caution-mark.png" %}' alt="expired" class="float-left" height="23px" />
@@ -947,6 +947,9 @@
                     this.getIngredients();
                 },
                 updateIngredient: function() {
+                    if (this.currentIngredient.expiration_date == "") {
+                        this.currentIngredient.expiration_date = null;
+                    }
                     this.loading = true;
                     axios.put(`/api/ingredient/${this.currentIngredient.id}/`, this.currentIngredient)
                         .then((response) => {

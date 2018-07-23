@@ -1,4 +1,5 @@
 from rest_framework import generics, filters
+from django.db.models import F
 
 from storage.models import Ingredient
 from storage.serializers import IngredientSerializer
@@ -14,7 +15,7 @@ class StorageSearchAPIView_expirationA(generics.ListAPIView):
     search_fields = ('name',)
 
     def get_queryset(self):
-        return Ingredient.objects.filter(owner=self.request.user).order_by('expiration_date', 'name')
+        return Ingredient.objects.filter(owner=self.request.user).order_by(F('expiration_date').asc(nulls_last=True), 'name')
 
 
 class StorageSearchAPIView_expirationD(generics.ListAPIView):
@@ -23,7 +24,7 @@ class StorageSearchAPIView_expirationD(generics.ListAPIView):
     search_fields = ('name',)
 
     def get_queryset(self):
-        return Ingredient.objects.filter(owner=self.request.user).order_by('-expiration_date', 'name')
+        return Ingredient.objects.filter(owner=self.request.user).order_by(F('expiration_date').desc(nulls_first=True), 'name')
 
 
 class StorageSearchAPIView_nameA(generics.ListAPIView):
@@ -32,7 +33,7 @@ class StorageSearchAPIView_nameA(generics.ListAPIView):
     search_fields = ('name',)
 
     def get_queryset(self):
-        return Ingredient.objects.filter(owner=self.request.user).order_by('name', 'expiration_date')
+        return Ingredient.objects.filter(owner=self.request.user).order_by('name', F('expiration_date').asc(nulls_last=True))
 
 
 class StorageSearchAPIView_nameD(generics.ListAPIView):
@@ -41,7 +42,7 @@ class StorageSearchAPIView_nameD(generics.ListAPIView):
     search_fields = ('name',)
 
     def get_queryset(self):
-        return Ingredient.objects.filter(owner=self.request.user).order_by('-name', 'expiration_date')
+        return Ingredient.objects.filter(owner=self.request.user).order_by('-name', F('expiration_date').asc(nulls_last=True))
 
 
 class WorksSearchAPIView_titleA(generics.ListAPIView):
