@@ -37,6 +37,11 @@ getRecipe: function(wish_id) {
             console.log(err);
         })
 },
+appendWishRecipeList: function() {
+    if (this.newWish_recipes.slice(-1)[0].url) {
+        this.newWish_recipes.push({ 'wish_id': null, 'link_title': "Recipe", 'url': null });
+    }
+},
 addWish: function() {
     let formData = new FormData();
     formData.append("title", this.newWish.title);
@@ -53,9 +58,8 @@ addWish: function() {
         })
         .then((response) => {
             this.loading = false;
-            if (this.newWish_recipe.url) {
-                this.newWish_recipe.wish_id = response.data.id;
-                this.addWishRecipe();
+            if (this.newWish_recipes[0].url) {
+                this.addWishRecipes(response.data.id);
             } else {
                 this.getWishes();
             }
@@ -66,17 +70,20 @@ addWish: function() {
             console.log(err);
         })
 },
-addWishRecipe: function() {
+addWishRecipes: function(wish_id) {
     this.loading = true;
-    axios.post('/api/wish-recipe/', this.newWish_recipe)
+    for (i in this.newWish_recipes) {
+        this.newWish_recipes[i].wish_id = wish_id;
+         axios.post('/api/wish-recipe/', this.newWish_recipes[i])
         .then((response) => {
             this.loading = false;
-            this.getWishes();
         })
         .catch((err) => {
             this.loading = false;
             console.log(err);
         })
+    }
+    this.getWishes();
 },
 updateWish: function() {
     let formData = new FormData();
@@ -106,8 +113,6 @@ updateWish: function() {
 updateRecipe: function() {
     this.loading = true;
     this.currentWish_recipes.forEach(function(recipe) {
-        console.log(recipe);
-        console.log(recipe.wish_id);
         axios.put(`/api/wish-recipe/${recipe.id}/`, recipe)
         .then((response) => {
             this.loading = false;

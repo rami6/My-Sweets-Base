@@ -37,6 +37,11 @@ getWorkRecipe: function(work_id) {
             console.log(err);
         })
 },
+appendWorkRecipeList: function() {
+    if (this.newWork_recipes.slice(-1)[0].url) {
+        this.newWork_recipes.push({'work_id': null, 'link_title': "Recipe", 'url': null});
+    }
+},
 addWork: function() {
     let formData = new FormData();
     formData.append("title", this.newWork.title);
@@ -54,9 +59,8 @@ addWork: function() {
         })
         .then((response) => {
             this.loading = false;
-            if (this.newWork_Recipe.url) {
-                this.newWork_Recipe.work_id = response.data.id;
-                this.addWorkRecipe();
+            if (this.newWork_recipes[0].url) {
+                this.addWorkRecipes(response.data.id);
             } else {
                 this.getWorks();
             }
@@ -67,17 +71,20 @@ addWork: function() {
             console.log(err);
         })
 },
-addWorkRecipe: function() {
+addWorkRecipes: function(work_id) {
     this.loading = true;
-    axios.post('/api/recipe/', this.newWork_recipe)
+    for (i in this.newWork_recipes) {
+        this.newWork_recipes[i].work_id = work_id;
+         axios.post('/api/recipe/', this.newWork_recipes[i])
         .then((response) => {
             this.loading = false;
-            this.getWorks();
         })
         .catch((err) => {
             this.loading = false;
             console.log(err);
         })
+    }
+    this.getWorks();
 },
 updateWork: function() {
     let formData = new FormData();

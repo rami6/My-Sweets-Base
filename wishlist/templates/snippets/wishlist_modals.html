@@ -63,14 +63,15 @@
                 v-model="newWish.title"
                 required="required" >
             </div>
+            <div v-for="recipe in newWish_recipes">
             <div class="form-group">
               <label for="title">Recipe URL</label>
               <input
-                type="text"
+                type="url"
                 class="form-control"
                 id="title"
                 placeholder="Enter url"
-                v-model="newWish_recipe.url" >
+                v-model="recipe.url" >
             </div>
             <div class="form-group">
               <label for="title">Recipe title</label>
@@ -79,8 +80,10 @@
                 class="form-control"
                 id="title"
                 placeholder="Enter title"
-                v-model="newWish_recipe.link_title" >
+                v-model="recipe.link_title" >
             </div>
+            </div>
+            <div class="text-right"><a href="#" v-on:click="appendWishRecipeList">Add more recipe</a></div>
             <div class="form-group">
               <label for="note">Note</label>
               <textarea
