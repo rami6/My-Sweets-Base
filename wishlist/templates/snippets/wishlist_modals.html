@@ -64,24 +64,24 @@
                 required="required" >
             </div>
             <div v-for="recipe in newWish_recipes">
-            <div class="form-group">
-              <label for="title">Recipe URL</label>
-              <input
-                type="url"
-                class="form-control"
-                id="title"
-                placeholder="Enter url"
-                v-model="recipe.url" >
-            </div>
-            <div class="form-group">
-              <label for="title">Recipe title</label>
-              <input
-                type="text"
-                class="form-control"
-                id="title"
-                placeholder="Enter title"
-                v-model="recipe.link_title" >
-            </div>
+                <div class="form-group">
+                  <label for="title">Recipe URL</label>
+                  <input
+                    type="url"
+                    class="form-control"
+                    id="title"
+                    placeholder="Enter url"
+                    v-model="recipe.url" >
+                </div>
+                <div class="form-group">
+                  <label for="title">Recipe title</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="title"
+                    placeholder="Enter title"
+                    v-model="recipe.link_title" >
+                </div>
             </div>
             <div class="text-right"><a href="#" v-on:click="appendWishRecipeList">Add more recipe</a></div>
             <div class="form-group">
@@ -140,10 +140,33 @@
                 required="required" >
             </div>
             <div v-for="recipe in currentWish_recipes">
+                 <div v-bind:id="'wishRecipe-' + recipe.id" >
+                    <div class="text-right"><a href="#" v-on:click="setDeletedWishRecipe(recipe)" data-toggle="modal" data-target="#delete-wish-recipe-modal">Delete this field</a></div>
+                    <div class="form-group">
+                      <label for="title">Recipe URL</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="title"
+                        placeholder="Enter url"
+                        v-model="recipe.url" >
+                    </div>
+                    <div class="form-group">
+                      <label for="title">Recipe title</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="title"
+                        placeholder="Enter title"
+                        v-model="recipe.link_title" >
+                    </div>
+                 </div>
+            </div>
+            <div v-for="recipe in currentWish_new_recipes">
                 <div class="form-group">
                   <label for="title">Recipe URL</label>
                   <input
-                    type="text"
+                    type="url"
                     class="form-control"
                     id="title"
                     placeholder="Enter url"
@@ -159,6 +182,7 @@
                     v-model="recipe.link_title" >
                 </div>
             </div>
+            <div class="text-right"><a href="#" v-on:click="appendCurrentWishRecipeList">Add more recipe</a></div>
             <div class="form-group">
               <label for="note">Note</label>
               <textarea
@@ -178,6 +202,31 @@
    <div class="loading" v-if="loading===true">Loading&#8230;</div>
   </div>
 <!-- End of Edit Wish modal -->
+
+<!-- Delete Wish Recipe modal -->
+<div class="modal fade" id="delete-wish-recipe-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Delete Work</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form v-on:submit.prevent="deleteWishRecipe()" class="form-inline">
+        <div class="modal-body">
+          Are you sure to delete "${deleted_wish_recipe.link_title}"?
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary m-progress" data-dismiss="modal">No</button>
+        <button type="submit" class="btn btn-primary">Yes</button>
+        </div>
+        </form>
+      </div>
+    </div>
+   <div class="loading" v-if="loading===true">Loading&#8230;</div>
+  </div>
+<!-- End of Delete Wish Recipe modal -->
 
 <!-- Delete Wish modal -->
 <div class="modal fade" id="delete-wish-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">

@@ -86,6 +86,9 @@ addWorkRecipes: function(work_id) {
     }
     this.getWorks();
 },
+appendCurrentWorkRecipeList: function() {
+    this.currentWork_new_recipes.push({'work_id': null, 'link_title': "Recipe", 'url': null});
+},
 updateWork: function() {
     let formData = new FormData();
     formData.append("title", this.currentWork.title);
@@ -105,6 +108,7 @@ updateWork: function() {
             this.loading = false;
             this.currentWork = response.data;
             this.updateRecipe();
+            this.addCurrentWorkRecipes();
             $("#edit-work-modal").modal('toggle');
         })
         .catch((err) => {
@@ -120,13 +124,25 @@ updateRecipe: function() {
         axios.put(`/api/recipe/${recipe.id}/`, recipe)
         .then((response) => {
             this.loading = false;
-            this.getWorks();
         })
         .catch((err) => {
             this.loading = false;
             console.log(err);
         })
     });
+},
+addCurrentWorkRecipes: function() {
+    for (i in this.currentWork_new_recipes) {
+        this.currentWork_new_recipes[i].work_id = this.currentWork.id;
+         axios.post('/api/recipe/', this.currentWork_new_recipes[i])
+        .then((response) => {
+            this.loading = false;
+        })
+        .catch((err) => {
+            this.loading = false;
+            console.log(err);
+        })
+    }
     this.getWorks();
 },
 deleteWork: function() {
@@ -157,4 +173,20 @@ processWorkFile: function(filelist, action) {
 openEditWorkModal: function() {
     $("#work-detail-modal").modal('toggle');
     $("#edit-work-modal").modal('show');
+},
+setDeletedWorkRecipe: function(recipe) {
+    this.deleted_work_recipe = recipe;
+},
+deleteWorkRecipe: function() {
+    axios.delete(`/api/recipe/${this.deleted_work_recipe.id}/`)
+        .then((response) => {
+            this.loading = false;
+            this.getWorkRecipe
+            $("#delete-work-recipe-modal").modal('toggle');
+            $(`#recipe-${this.deleted_work_recipe.id}`).toggle();
+        })
+        .catch((err) => {
+            this.loading = false;
+            console.log(err);
+        })
 },

@@ -85,6 +85,9 @@ addWishRecipes: function(wish_id) {
     }
     this.getWishes();
 },
+appendCurrentWishRecipeList: function() {
+    this.currentWish_new_recipes.push({ 'wish_id': null, 'link_title': "Recipe", 'url': null });
+},
 updateWish: function() {
     let formData = new FormData();
     formData.append("title", this.currentWish.title);
@@ -103,6 +106,7 @@ updateWish: function() {
             this.loading = false;
             this.currentWish = response.data;
             this.updateRecipe();
+            this.addCurrentWishRecipes();
             $("#edit-wish-modal").modal('toggle');
         })
         .catch((err) => {
@@ -123,6 +127,21 @@ updateRecipe: function() {
             console.log(err);
         })
     });
+    this.getWishes();
+},
+addCurrentWishRecipes: function() {
+    this.loading = true;
+    for (i in this.currentWish_new_recipes) {
+        this.currentWish_new_recipes[i].wish_id = this.currentWish.id;
+         axios.post('/api/wish-recipe/', this.currentWish_new_recipes[i])
+        .then((response) => {
+            this.loading = false;
+        })
+        .catch((err) => {
+            this.loading = false;
+            console.log(err);
+        })
+    }
     this.getWishes();
 },
 deleteWish: function() {
@@ -153,4 +172,20 @@ processWishFile: function(filelist, action) {
 openEditModal: function() {
     $("#wish-detail-modal").modal('toggle');
     $("#edit-wish-modal").modal('show');
+},
+setDeletedWishRecipe: function(recipe) {
+    this.deleted_wish_recipe = recipe;
+},
+deleteWishRecipe: function() {
+    axios.delete(`/api/wish-recipe/${this.deleted_wish_recipe.id}/`)
+        .then((response) => {
+            this.loading = false;
+            this.getWishRecipe
+            $("#delete-wish-recipe-modal").modal('toggle');
+            $(`#wishRecipe-${this.deleted_wish_recipe.id}`).toggle();
+        })
+        .catch((err) => {
+            this.loading = false;
+            console.log(err);
+        })
 },
