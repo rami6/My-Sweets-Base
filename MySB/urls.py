@@ -13,7 +13,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', login, {'template_name': 'landing.html'}, name='login'),
     path('signup/', views.signup, name='signup'),
-    path('logout/', logout, {'template_name': 'logout.html'}),
+    path('logout/', logout, {'template_name': 'accounts/logout.html'}),
     path('settings/', views.edit_account, name='settings'),
     path('settings/success/', TemplateView.as_view(template_name='accounts/account_edit_success.html'), name='settings_success'),
     path('change-password/', views.change_password, name='change_password'),
