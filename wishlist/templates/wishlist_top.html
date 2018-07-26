@@ -5,7 +5,7 @@
     <div id="vue-el">
     <div class="row">
         <div class="col-3">
-            <form v-on:submit.prevent="searchWishes(word)" class="form-inline m-2">
+            <form v-on:submit.prevent="searchWishes(word)" class="form-inline mt-2" style="display: inline-block">
                 <input
                     type="text"
                     class="form-control"
@@ -13,6 +13,7 @@
                     placeholder="Search"
                     v-model="word">
             </form>
+            <span v-on:click="clearSearch()" style="color: #D38E6C" class="align-bottom">Clear</span>
         </div>
         <div class="col-8">
             <span>Sort: </span>
@@ -109,6 +110,10 @@
                         }
                     }
                     this.getWishes();
+                },
+                clearSearch: function() {
+                    this.getWishes();
+                    this.word = "";
                 },
             }
         });

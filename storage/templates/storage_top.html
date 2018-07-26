@@ -24,7 +24,7 @@
         </div>
         <button type="submit" class="btn btn-dark ml-1">Add</button>
     </form>
-    <form v-on:submit.prevent="searchIngredients(word)" class="form-inline m-2">
+    <form v-on:submit.prevent="searchIngredients(word)" class="form-inline mt-2 ml-2" style="display: inline-block">
         <input
             type="text"
             class="form-control"
@@ -32,7 +32,8 @@
             placeholder="Search"
             v-model="word">
     </form>
-    <table class="table">
+    <span v-on:click="clearSearch()" style="color: #D38E6C" class="align-bottom">Clear</span>
+    <table class="table mt-4">
         <thead>
           <tr>
             <th scope="col" v-on:click="switchSort('name')">Name</th>

@@ -134,5 +134,9 @@ new Vue({
         setDefaultValue: function () {
             this.newIngredient.expiration_date = this.getToday();
         },
+        clearSearch: function() {
+            this.getIngredients();
+            this.word = "";
+        },
     }
 })

@@ -20,7 +20,7 @@
                                 v-model="word">
                         </form>
                     </div>
-                    <div class="col-1 d-flex align-items-end">
+                    <div class="col-1 d-flex align-items-end mb-1">
                         <span v-on:click="clearSearch()" style="color: #D38E6C">Clear</span>
                     </div>
                     <div class="col-8">
@@ -66,8 +66,7 @@
         </div>
         <div class="col-sm-5 col-md-6 col-lg-5" style="background-color:#FFF9EF;">
             <div id="vue-el-s">
-            <div class="row">
-                <form v-on:submit.prevent="searchIngredients(word)" class="form-inline m-2">
+                <form v-on:submit.prevent="searchIngredients(word)" class="form-inline mt-2 ml-2" style="display: inline-block;">
                     <input
                         type="text"
                         class="form-control"
@@ -75,12 +74,9 @@
                         placeholder="Search"
                         v-model="word">
                 </form>
-                <div class=" d-flex align-items-end">
-                        <span v-on:click="clearSearch()" style="color: #D38E6C">Clear</span>
-                </div>
-            </div>
+                <span v-on:click="clearSearch()" style="color: #D38E6C" class="align-bottom">Clear</span>
             <div>
-                <table class="table table-sm">
+                <table class="table table-sm mt-3">
                     <thead style="display: block;">
                       <tr>
                         <th scope="col" v-on:click="switchSort('name')" style="width: 230px">Name</th>
