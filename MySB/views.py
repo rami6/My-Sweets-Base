@@ -3,6 +3,14 @@ from .forms import SignUpForm, AccountEditForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import views
+
+
+def custom_login(request):
+    if request.user.is_authenticated:
+        return redirect('/home')
+    else:
+        return views.login(request, template_name='landing.html')
 
 
 def signup(request):

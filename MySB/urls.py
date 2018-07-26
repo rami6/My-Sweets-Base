@@ -4,14 +4,14 @@ from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls import url
 from django.conf.urls.static import static
-from django.contrib.auth.views import login, logout, password_reset, password_reset_done, password_reset_confirm, password_reset_complete
+from django.contrib.auth.views import logout, password_reset, password_reset_done, password_reset_confirm, password_reset_complete
 from .routers import router
 from .apiviews import StorageSearchAPIView_expirationA, StorageSearchAPIView_expirationD, StorageSearchAPIView_nameA, StorageSearchAPIView_nameD, RecipeListAPIView, WorksSearchAPIView_titleA, WorksSearchAPIView_titleD, WorksSearchAPIView_dateA, WorksSearchAPIView_dateD, WishRecipeListAPIView, WishlistSearchAPIView_titleA, WishlistSearchAPIView_titleD, WishlistSearchAPIView_dateA, WishlistSearchAPIView_dateD
 from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', login, {'template_name': 'landing.html'}, name='login'),
+    path('', views.custom_login, name='login'),
     path('signup/', views.signup, name='signup'),
     path('logout/', logout, {'template_name': 'accounts/logout.html'}),
     path('settings/', views.edit_account, name='settings'),
