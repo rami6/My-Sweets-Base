@@ -73,6 +73,7 @@
                 required="required">
             </div>
             <div v-for="recipe in newWork_recipes">
+                <hr>
                 <div class="form-group">
                   <label for="title">Recipe URL</label>
                   <input
@@ -158,6 +159,7 @@
                 required="required">
             </div>
             <div v-for="recipe in currentWork_recipes">
+                <hr>
                 <div v-bind:id="'recipe-' + recipe.id" >
                     <div class="text-right"><a href="#" v-on:click="setDeletedWorkRecipe(recipe)" data-toggle="modal" data-target="#delete-work-recipe-modal">Delete this field</a></div>
                     <div class="form-group ">
@@ -181,6 +183,7 @@
                 </div>
             </div>
              <div v-for="recipe in currentWork_new_recipes">
+                 <hr>
                 <div class="form-group">
                   <label for="title">Recipe URL</label>
                   <input
