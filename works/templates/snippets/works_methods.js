@@ -64,7 +64,7 @@ addWork: function() {
             } else {
                 this.getWorks();
             }
-            this.newWork = { 'title': null, 'made_date': this.getToday(), 'note': null, 'image': null };
+            this.newWork = { 'title': null, 'made_date': this.getToday(), 'note': "", 'image': null };
             document.getElementById('newWork_image').value = null;
             $("#add-work-modal").modal('toggle');
         })

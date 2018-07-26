@@ -63,7 +63,7 @@ addWish: function() {
             } else {
                 this.getWishes();
             }
-            this.newWish = { 'title': null, 'note': null, 'image': null };
+            this.newWish = { 'title': null, 'note': "", 'image': null };
             document.getElementById('newWish_image').value = null;
             $("#add-wish-modal").modal('toggle');
         })
