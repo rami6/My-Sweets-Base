@@ -105,7 +105,7 @@ updateWish: function() {
         .then((response) => {
             this.loading = false;
             this.currentWish = response.data;
-            this.updateRecipe();
+            this.updateWishRecipe();
             this.addCurrentWishRecipes();
             $("#edit-wish-modal").modal('toggle');
         })
@@ -114,7 +114,7 @@ updateWish: function() {
             console.log(err);
         })
 },
-updateRecipe: function() {
+updateWishRecipe: function() {
     this.loading = true;
     this.currentWish_recipes.forEach(function(recipe) {
         axios.put(`/api/wish-recipe/${recipe.id}/`, recipe)
@@ -143,6 +143,7 @@ addCurrentWishRecipes: function() {
         })
     }
     this.getWishes();
+    this.currentWish_new_recipes = [];
 },
 deleteWish: function() {
     this.loading = true;

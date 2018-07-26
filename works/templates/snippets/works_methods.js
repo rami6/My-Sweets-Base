@@ -107,20 +107,18 @@ updateWork: function() {
         .then((response) => {
             this.loading = false;
             this.currentWork = response.data;
-            this.updateRecipe();
+            this.updateWorkRecipe();
             this.addCurrentWorkRecipes();
-            $("#edit-work-modal").modal('toggle');
+             $("#edit-work-modal").modal('toggle');
         })
         .catch((err) => {
             this.loading = false;
             console.log(err);
         })
 },
-updateRecipe: function() {
+updateWorkRecipe: function() {
     this.loading = true;
     this.currentWork_recipes.forEach(function(recipe) {
-        console.log(recipe);
-        console.log(recipe.work_id);
         axios.put(`/api/recipe/${recipe.id}/`, recipe)
         .then((response) => {
             this.loading = false;
@@ -144,6 +142,7 @@ addCurrentWorkRecipes: function() {
         })
     }
     this.getWorks();
+    this.currentWork_new_recipes = [];
 },
 deleteWork: function() {
     this.loading = true;
