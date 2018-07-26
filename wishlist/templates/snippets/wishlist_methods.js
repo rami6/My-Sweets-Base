@@ -63,6 +63,8 @@ addWish: function() {
             } else {
                 this.getWishes();
             }
+            this.newWish = { 'title': null, 'note': null, 'image': null };
+            document.getElementById('newWish_image').value = null;
             $("#add-wish-modal").modal('toggle');
         })
         .catch((err) => {
@@ -84,6 +86,7 @@ addWishRecipes: function(wish_id) {
         })
     }
     this.getWishes();
+    this.newWish_recipes = [{ 'wish_id': null, 'link_title': "Recipe", 'url': null }];
 },
 appendCurrentWishRecipeList: function() {
     this.currentWish_new_recipes.push({ 'wish_id': null, 'link_title': "Recipe", 'url': null });
@@ -113,6 +116,7 @@ updateWish: function() {
             this.loading = false;
             console.log(err);
         })
+     document.getElementById('currentWish_image').value = null;
 },
 updateWishRecipe: function() {
     this.loading = true;

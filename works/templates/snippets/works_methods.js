@@ -64,6 +64,8 @@ addWork: function() {
             } else {
                 this.getWorks();
             }
+            this.newWork = { 'title': null, 'made_date': this.getToday(), 'note': null, 'image': null };
+            document.getElementById('newWork_image').value = null;
             $("#add-work-modal").modal('toggle');
         })
         .catch((err) => {
@@ -85,6 +87,7 @@ addWorkRecipes: function(work_id) {
         })
     }
     this.getWorks();
+    this.newWork_recipes = [{ 'work_id': null, 'link_title': "Recipe", 'url': null }];
 },
 appendCurrentWorkRecipeList: function() {
     this.currentWork_new_recipes.push({'work_id': null, 'link_title': "Recipe", 'url': null});
@@ -115,6 +118,7 @@ updateWork: function() {
             this.loading = false;
             console.log(err);
         })
+    document.getElementById('currentWork_image').value = null;
 },
 updateWorkRecipe: function() {
     this.loading = true;
