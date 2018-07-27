@@ -162,8 +162,9 @@
 
 
      <div id="vue-el-l">
-         <h5>Shopping List</h5>
-        <form v-on:submit.prevent="addItem()" class="form-inline m-2">
+         <h5 style="display: inline-block;">Shopping List</h5>
+         <span style="color: #D38E6C" class="ml-3" data-toggle="modal" data-target="#delete-all-items-modal">[Delete All]</span>
+        <form v-on:submit.prevent="addItem()" class="form-inline mt-2 ml-2" style="display: inline-block;">
             <input
                 type="text"
                 class="form-control"
@@ -179,7 +180,7 @@
                 v-model="newItem.amount">
             <button type="submit" class="btn btn-dark ml-1">Add</button>
         </form>
-         <table class="table table-sm">
+         <table class="table table-sm mt-2">
             <thead style="display: block;">
               <tr>
                 <th scope="col" style="width: 50px"></th>
@@ -259,6 +260,31 @@
            <div class="loading" v-if="loading===true">Loading&#8230;</div>
           </div>
         <!-- End of Delete Item modal -->
+
+         <!-- Delete All Items modal -->
+        <div class="modal fade" id="delete-all-items-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Delete All Items from the Shopping List</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form v-on:submit.prevent="deleteAllItems()" class="form-inline">
+                <div class="modal-body">
+                  Are you sure to delete all items from the Shopping List?
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary m-progress" data-dismiss="modal">No</button>
+                <button type="submit" class="btn btn-primary" >Yes</button>
+                </div>
+                </form>
+              </div>
+            </div>
+           <div class="loading" v-if="loading===true">Loading&#8230;</div>
+          </div>
+        <!-- End of Delete All Items modal -->
         </div>
      </div>
     </div>
@@ -493,7 +519,21 @@
                             this.loading = false;
                             console.log(err);
                         })
-                }
+                },
+                deleteAllItems: function () {
+                    for (i in this.items) {
+                        axios.delete(`/api/shopitem/${this.items[i].id}/`)
+                            .then((response) => {
+                                if (i == this.items.length - 1) {
+                                    this.getItems();
+                                    $("#delete-all-items-modal").modal('toggle');
+                                }
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                            })
+                    }
+                },
             }
         })
     </script>
