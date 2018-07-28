@@ -99,65 +99,8 @@
                 </table>
             </div>
 
-        <!-- Edit Ingredient modal -->
-        <div class="modal fade" id="edit-ingredient-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLongTitle">Edit Ingredient</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <form v-on:submit.prevent="updateIngredient()" class="form-inline">
-                <div class="modal-body">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="name"
-                    placeholder="Enter name"
-                    v-model="currentIngredient.name"
-                    required="required" >
-                  <input
-                    type="date"
-                    class="form-control"
-                    id="expiration_date"
-                    v-model="currentIngredient.expiration_date" >
-                </div>
-                <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" >Save changes</button>
-                </div>
-                </form>
-              </div>
-            </div>
-           <div class="loading" v-if="loading===true">Loading&#8230;</div>
-          </div>
-        <!-- End of Edit Ingredient modal -->
-
-        <!-- Delete Ingredient modal -->
-        <div class="modal fade" id="delete-ingredient-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLongTitle">Delete Ingredient</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <form v-on:submit.prevent="deleteIngredient()" class="form-inline">
-                <div class="modal-body">
-                  Are you sure to delete "${currentIngredient.name}"?
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary m-progress" data-dismiss="modal">No</button>
-                <button type="submit" class="btn btn-primary" >Yes</button>
-                </div>
-                </form>
-              </div>
-            </div>
-           <div class="loading" v-if="loading===true">Loading&#8230;</div>
-          </div>
-        <!-- End of Delete Ingredient modal -->
+         {% include 'snippets/storage_modals.html' %}
+                
         </div>
 
 
