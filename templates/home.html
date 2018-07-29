@@ -4,10 +4,6 @@
     {% load static %}
     <div class="row m-1">
         <div class="col-sm-7 col-md-6 col-lg-7" style="background-color:#E2D1B1;" id="vue-el-w">
-            <div id="recipe-browser" class="h-100" style="display: none;">
-                <span aria-hidden="true" style="position:absolute; top:0; right:20px;" v-on:click="toggleIframe()">&times;</span>
-                <iframe name="recipe-frame" class="w-100 h-100" style="border:none;"></iframe>
-            </div>
             <div id="left-list" class="h-100">
                 <div class="row">
                     <div class="col-3">
@@ -100,7 +96,7 @@
             </div>
 
          {% include 'snippets/storage_modals.html' %}
-                
+
         </div>
 
 
@@ -339,14 +335,15 @@
                     this.getWishes();
                     this.word = "";
                 },
-                toggleIframe: function () {
-                    if (this.display == "works") {
-                        $("#work-detail-modal").modal('toggle');
-                    } else {
-                        $("#wish-detail-modal").modal('toggle');
-                    }
-                    $('#recipe-browser').toggle();
-                    $('#left-list').toggle();
+                openRecipe: function(url) {
+                    let innerHeight = window.innerHeight;
+                    let outerWidth = window.outerWidth;
+                    let width_r = outerWidth - 600 - 100;
+                    let left_u = width_r + 50;
+                    let attribute_r = 'width=' + width_r + ', height=' + innerHeight + ', left=50, scrollbars=no, resizable=no';
+                    window.open(url, 'recipe', attribute_r);
+                    let attribute_u = 'width=600, height=' + innerHeight + ', left=' + left_u + ', scrollbars=no, resizable=no';
+                    window.open('util-view', 'util', attribute_u);
                 },
             }
         });
@@ -369,6 +366,7 @@
             },
             mounted: function () {
                 this.getItems();
+                this.addFocusEvent();
             },
             methods: {
                 getItems: function () {
@@ -477,8 +475,11 @@
                             })
                     }
                 },
-            }
-        })
+                addFocusEvent: function () {
+                    window.addEventListener("focus", this.getItems, false);
+                },
+            },
+        });
     </script>
     <script>
         $('.modal').on("hidden.bs.modal", function (e) {

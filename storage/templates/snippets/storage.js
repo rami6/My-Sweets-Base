@@ -17,6 +17,7 @@ new Vue({
     mounted: function() {
         this.getIngredients();
         this.setDefaultValue();
+        this.addFocusEvent();
     },
     methods: {
         getIngredients: function() {
@@ -138,5 +139,8 @@ new Vue({
             this.getIngredients();
             this.word = "";
         },
+        addFocusEvent: function () {
+            window.addEventListener("focus", this.getIngredients, false);
+        },
     }
-})
+});

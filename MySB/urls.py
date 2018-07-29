@@ -23,6 +23,7 @@ urlpatterns = [
     path('reset-password/complete/', password_reset_complete, name='password_reset_complete'),
     path('delete-account/', views.delete_account, name='delete_account'),
     path('home/', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('home/util-view', TemplateView.as_view(template_name='util_view.html'), name='util'),
     path('works/', include('works.urls')),
     path('storage/', include('storage.urls')),
     path('wish-list/', include('wishlist.urls')),
