@@ -3,10 +3,10 @@
 {% block content %}
     {% load static %}
     <div class="row m-1">
-        <div class="col-sm-7 col-md-7 col-lg-7" style="background-color:#E2D1B1;" id="vue-el-w">
+        <div class="col-12 col-sm-5 col-md-6 col-lg-7" style="background-color:#E2D1B1;" id="vue-el-w">
             <div id="left-list" class="h-100">
                 <div class="row" id="util-row">
-                    <div class="col-3">
+                    <div class="col-lg-4 col-md-12 col-sm-12">
                         <form v-on:submit.prevent="searchItems()" class="form-inline m-2">
                             <input
                                 type="text"
@@ -16,13 +16,12 @@
                                 v-model="word">
                         </form>
                     </div>
-                    <div class="col-1 d-flex align-items-end mb-1">
-                        <span v-on:click="clearSearch()" style="color: #D38E6C">Clear</span>
-                    </div>
-                    <div class="col-8">
+                    <div class="col-lg-4 col-md-6 col-sm-12">
                         <span>Sort: </span>
                         <button type="button" class="btn btn-info m-2" v-on:click="switchSort('title')">Title</button>
                         <button type="button" class="btn btn-info m-2" v-on:click="switchSort('date')">Date</button>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 d-flex align-items-center">
                         <div class="form-check form-check-inline">
                           <input class="form-check-input" type="radio" name="displayRadios" id="works-checkbox" value="works" checked="checked" v-model="display">
                           <label class="form-check-label" for="works-checkbox">Works</label>
@@ -34,7 +33,7 @@
                     </div>
                 </div>
                 <div class="row" id="works-wishlist" style="overflow-y: scroll;">
-                    <div v-if="display == 'works'" class="col-md-4 col-sm-5 p-1" v-for="work in works" v-on:click="getWork(work.id)">
+                    <div v-if="display == 'works'" class="col-lg-4 col-md-6 col-sm-12 p-1" v-for="work in works" v-on:click="getWork(work.id)">
                         <div class="bg-white">
                             <div class="p-2">
                                 <h4 class="text-center">${work.title}</h4>
@@ -43,7 +42,7 @@
                             </div>
                         </div>
                     </div>
-                    <div v-if="display == 'wish'" class="col-md-4 col-sm-5 p-1" v-for="wish in wishes" v-on:click="getWish(wish.id)">
+                    <div v-if="display == 'wish'" class="col-lg-4 col-md-6 col-sm-12 p-1" v-for="wish in wishes" v-on:click="getWish(wish.id)">
                         <div class="bg-white">
                             <div class="p-2">
                                 <h4 class="text-center">${wish.title}</h4>
@@ -59,172 +58,175 @@
         {% include 'snippets/wishlist_modals.html' %}
 
         </div>
-        <div class="col-sm-5 col-md-5 col-lg-5" style="background-color:#FFF9EF;">
-            <div id="vue-el-s" class="mb-0">
-                <form id="storage-search" v-on:submit.prevent="searchIngredients(word)" class="form-inline mt-2 ml-2 mb-2" style="display: inline-block;">
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="word"
-                        placeholder="Search"
-                        v-model="word">
-                </form>
-                <span v-on:click="clearSearch()" style="color: #D38E6C" class="align-bottom">Clear</span>
-                <div>
-                    <table class="table table-sm  mt-0 mb-0">
-                        <thead id="storage-thead" style="display: block;">
+        <div class="col-12 col-sm-7 col-md-6 col-lg-5">
+            <div style="background-color:#FFF9EF;" class="ml-1 pl-2 pr-2">
+                <div id="vue-el-s" class="mb-0">
+                    <form id="storage-search" v-on:submit.prevent="searchIngredients(word)" class="form-inline mt-2 ml-2 mb-2" style="display: inline-block;">
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="word"
+                            placeholder="Search"
+                            v-model="word">
+                    </form>
+                    <span v-on:click="clearSearch()" style="color: #D38E6C" class="align-bottom mb-1">Clear</span>
+                    <div>
+                        <table class="table table-sm  mt-0 mb-0">
+                            <thead id="storage-thead" style="display: block;">
+                              <tr>
+                                <th scope="col" v-on:click="switchSort('name')" style="width: 230px">Name</th>
+                                <th scope="col" v-on:click="switchSort('expiration')" style="width: 200px">Expiration Date</th>
+                                <th scope="col" style="width: 50px"></th>
+                                <th scope="col" style="width: 50px"></th>
+                              </tr>
+                            </thead>
+                            <tbody id="storage-tbody" style="overflow-y: scroll; display: block;">
+                                <tr v-for="ingredient in ingredients">
+                                    <td v-on:dblclick="getIngredient(ingredient.id, 'edit')" style="width: 230px;">${ingredient.name}</td>
+                                    <td v-on:dblclick="getIngredient(ingredient.id, 'edit')" style="width: 200px;"><span v-if="ingredient.expiration_date">${ingredient.expiration_date}</span></td>
+                                    <td style="width: 50px;">
+                                    {% load static %}
+                                    <img v-if="ingredient.is_expired" src='{% static "image/caution-mark.png" %}' alt="expired" class="float-left" height="23px" />
+                                    </td>
+                                    <td v-on:click="getIngredient(ingredient.id, 'delete')" class="text-secondary" style="width: 50px;">&times;</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                 {% include 'snippets/storage_modals.html' %}
+
+                </div>
+
+                 <div id="vue-el-l" class="mb-0">
+                     <h5 id="shoppinglist-title" style="display: inline-block;" class="mt-2">Shopping List</h5>
+                     <span style="color: #D38E6C" class="ml-3" data-toggle="modal" data-target="#delete-all-items-modal">[Delete All]</span>
+                     <div>
+                        <form id="shoppinglist-add" v-on:submit.prevent="addItem()" class="form-inline mt-0 ml-2 mb-2" style="display: inline-block;">
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="name"
+                                placeholder="Name"
+                                v-model="newItem.name"
+                                required="required">
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="amount"
+                                placeholder="(Amount)"
+                                v-model="newItem.amount">
+                            <button type="submit" class="btn btn-dark ml-1">Add</button>
+                        </form>
+                     </div>
+                     <table class="table table-sm mt-0 mb-0">
+                        <thead id="shoppinglist-thead" style="display: block;">
                           <tr>
-                            <th scope="col" v-on:click="switchSort('name')" style="width: 230px">Name</th>
-                            <th scope="col" v-on:click="switchSort('expiration')" style="width: 200px">Expiration Date</th>
                             <th scope="col" style="width: 50px"></th>
+                            <th scope="col" style="width: 230px">Name</th>
+                            <th scope="col" style="width: 200px">Amount</th>
                             <th scope="col" style="width: 50px"></th>
                           </tr>
                         </thead>
-                        <tbody id="storage-tbody" style="overflow-y: scroll; display: block;">
-                            <tr v-for="ingredient in ingredients">
-                                <td v-on:dblclick="getIngredient(ingredient.id, 'edit')" style="width: 230px;">${ingredient.name}</td>
-                                <td v-on:dblclick="getIngredient(ingredient.id, 'edit')" style="width: 200px;"><span v-if="ingredient.expiration_date">${ingredient.expiration_date}</span></td>
-                                <td style="width: 50px;">
-                                {% load static %}
-                                <img v-if="ingredient.is_expired" src='{% static "image/caution-mark.png" %}' alt="expired" class="float-left" height="23px" />
-                                </td>
-                                <td v-on:click="getIngredient(ingredient.id, 'delete')" class="text-secondary" style="width: 50px;">&times;</td>
+                        <tbody id="shoppinglist-tbody" style="overflow-y: scroll; display: block; width:100%;">
+                            <tr v-for="item in items">
+                                <td style="width: 50px"><input type="checkbox" v-model="item.is_bought" v-on:click="checkItem(item.id)"></td>
+                                <td v-on:dblclick="getItem(item.id, 'edit')" style="width: 230px">${item.name}</td>
+                                <td v-on:dblclick="getItem(item.id, 'edit')" style="width: 200px"><span v-if="item.amount">${item.amount}</span></td>
+                                <td v-on:click="getItem(item.id, 'delete')" class="text-secondary" style="width: 50px">&times;</td>
                             </tr>
                         </tbody>
-                    </table>
-                </div>
+                     </table>
 
-             {% include 'snippets/storage_modals.html' %}
 
+                    <!-- Edit Item modal -->
+                    <div class="modal fade" id="edit-item-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLongTitle">Edit Item</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <form v-on:submit.prevent="updateItem()" class="form-inline">
+                            <div class="modal-body">
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="name"
+                                placeholder="Name"
+                                v-model="currentItem.name"
+                                required="required" >
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="amount"
+                                placeholder="(Amount)"
+                                v-model="currentItem.amount">
+                            </div>
+                            <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" >Save changes</button>
+                            </div>
+                            </form>
+                          </div>
+                        </div>
+                       <div class="loading" v-if="loading===true">Loading&#8230;</div>
+                      </div>
+                    <!-- End of Edit Item modal -->
+
+                    <!-- Delete Item modal -->
+                    <div class="modal fade" id="delete-item-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLongTitle">Delete Item</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <form v-on:submit.prevent="deleteItem()" class="form-inline">
+                            <div class="modal-body">
+                              Are you sure to delete "${currentItem.name}"?
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary m-progress" data-dismiss="modal">No</button>
+                            <button type="submit" class="btn btn-primary" >Yes</button>
+                            </div>
+                            </form>
+                          </div>
+                        </div>
+                       <div class="loading" v-if="loading===true">Loading&#8230;</div>
+                      </div>
+                    <!-- End of Delete Item modal -->
+
+                     <!-- Delete All Items modal -->
+                    <div class="modal fade" id="delete-all-items-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLongTitle">Delete All Items from the Shopping List</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <form v-on:submit.prevent="deleteAllItems()" class="form-inline">
+                            <div class="modal-body">
+                              Are you sure to delete all items from the Shopping List?
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary m-progress" data-dismiss="modal">No</button>
+                            <button type="submit" class="btn btn-primary" >Yes</button>
+                            </div>
+                            </form>
+                          </div>
+                        </div>
+                       <div class="loading" v-if="loading===true">Loading&#8230;</div>
+                      </div>
+                    <!-- End of Delete All Items modal -->
+                 </div>
             </div>
-
-
-     <div id="vue-el-l" class="mb-0">
-         <h5 id="shoppinglist-title" style="display: inline-block;" class="mt-2">Shopping List</h5>
-         <span style="color: #D38E6C" class="ml-3" data-toggle="modal" data-target="#delete-all-items-modal">[Delete All]</span>
-        <form id="shoppinglist-add" v-on:submit.prevent="addItem()" class="form-inline mt-0 ml-2 mb-2" style="display: inline-block;">
-            <input
-                type="text"
-                class="form-control"
-                id="name"
-                placeholder="Name"
-                v-model="newItem.name"
-                required="required">
-            <input
-                type="text"
-                class="form-control"
-                id="amount"
-                placeholder="(Amount)"
-                v-model="newItem.amount">
-            <button type="submit" class="btn btn-dark ml-1">Add</button>
-        </form>
-         <table class="table table-sm mt-0 mb-0">
-            <thead id="shoppinglist-thead" style="display: block;">
-              <tr>
-                <th scope="col" style="width: 50px"></th>
-                <th scope="col" style="width: 230px">Name</th>
-                <th scope="col" style="width: 200px">Amount</th>
-                <th scope="col" style="width: 50px"></th>
-              </tr>
-            </thead>
-            <tbody id="shoppinglist-tbody" style="overflow-y: scroll; display: block; width:100%;">
-                <tr v-for="item in items">
-                    <td style="width: 50px"><input type="checkbox" v-model="item.is_bought" v-on:click="checkItem(item.id)"></td>
-                    <td v-on:dblclick="getItem(item.id, 'edit')" style="width: 230px">${item.name}</td>
-                    <td v-on:dblclick="getItem(item.id, 'edit')" style="width: 200px"><span v-if="item.amount">${item.amount}</span></td>
-                    <td v-on:click="getItem(item.id, 'delete')" class="text-secondary" style="width: 50px">&times;</td>
-                </tr>
-            </tbody>
-         </table>
-
-
-        <!-- Edit Item modal -->
-        <div class="modal fade" id="edit-item-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLongTitle">Edit Item</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <form v-on:submit.prevent="updateItem()" class="form-inline">
-                <div class="modal-body">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="name"
-                    placeholder="Name"
-                    v-model="currentItem.name"
-                    required="required" >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="amount"
-                    placeholder="(Amount)"
-                    v-model="currentItem.amount">
-                </div>
-                <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" >Save changes</button>
-                </div>
-                </form>
-              </div>
-            </div>
-           <div class="loading" v-if="loading===true">Loading&#8230;</div>
-          </div>
-        <!-- End of Edit Item modal -->
-
-        <!-- Delete Item modal -->
-        <div class="modal fade" id="delete-item-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLongTitle">Delete Item</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <form v-on:submit.prevent="deleteItem()" class="form-inline">
-                <div class="modal-body">
-                  Are you sure to delete "${currentItem.name}"?
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary m-progress" data-dismiss="modal">No</button>
-                <button type="submit" class="btn btn-primary" >Yes</button>
-                </div>
-                </form>
-              </div>
-            </div>
-           <div class="loading" v-if="loading===true">Loading&#8230;</div>
-          </div>
-        <!-- End of Delete Item modal -->
-
-         <!-- Delete All Items modal -->
-        <div class="modal fade" id="delete-all-items-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLongTitle">Delete All Items from the Shopping List</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <form v-on:submit.prevent="deleteAllItems()" class="form-inline">
-                <div class="modal-body">
-                  Are you sure to delete all items from the Shopping List?
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary m-progress" data-dismiss="modal">No</button>
-                <button type="submit" class="btn btn-primary" >Yes</button>
-                </div>
-                </form>
-              </div>
-            </div>
-           <div class="loading" v-if="loading===true">Loading&#8230;</div>
-          </div>
-        <!-- End of Delete All Items modal -->
         </div>
-     </div>
     </div>
 
 {% endblock content %}
@@ -366,7 +368,7 @@
             mounted: function () {
                 this.getItems();
                 this.addEvents();
-                this.manageHights();
+                this.manageHeights();
             },
             methods: {
                 getItems: function () {
@@ -477,20 +479,20 @@
                 },
                 addEvents: function () {
                     window.addEventListener("focus", this.getItems, false);
-                    window.addEventListener("resize", this.manageHights, false);
+                    window.addEventListener("resize", this.manageHeights, false);
                 },
-                manageHights: function () {
-                    let navHight = $('#nav').outerHeight(true)
-                    let utilHight = $('#util-row').outerHeight(true);
-                    let windowHight = window.innerHeight;
-                    let leftHight = windowHight - utilHight - navHight;
-                    document.getElementById('works-wishlist').style.height = `${leftHight}px`;
+                manageHeights: function () {
+                    let navHeight = $('#nav').outerHeight(true);
+                    let utilHeight = $('#util-row').outerHeight(true);
+                    let windowHeight = window.innerHeight;
+                    let leftHeight = windowHeight - utilHeight - navHeight;
+                    document.getElementById('works-wishlist').style.height = `${leftHeight}px`;
 
-                    let rightElHight = (windowHight - navHight) / 2;
-                    let storageTbodyHight = rightElHight - $('#storage-search').outerHeight(true) - $('#storage-thead').outerHeight(true);
-                    document.getElementById('storage-tbody').style.height = `${storageTbodyHight}px`;
-                    let shoppinglistTbodyHight = rightElHight - $('#shoppinglist-title').outerHeight(true) - $('#shoppinglist-add').outerHeight(true) - $('#shoppinglist-thead').outerHeight(true);
-                    document.getElementById('shoppinglist-tbody').style.height = `${shoppinglistTbodyHight}px`;
+                    let rightElHeight = (windowHeight - navHeight) / 2;
+                    let storageTbodyHeight = rightElHeight - $('#storage-search').outerHeight(true) - $('#storage-thead').outerHeight(true);
+                    document.getElementById('storage-tbody').style.height = `${storageTbodyHeight}px`;
+                    let shoppinglistTbodyHeight = rightElHeight - $('#shoppinglist-title').outerHeight(true) - $('#shoppinglist-add').outerHeight(true) - $('#shoppinglist-thead').outerHeight(true);
+                    document.getElementById('shoppinglist-tbody').style.height = `${shoppinglistTbodyHeight}px`;
                 },
             },
         });
