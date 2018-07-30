@@ -2,7 +2,7 @@
 
 {% block content %}
     {% load static %}
-    <div class="row m-1">
+    <div class="row ml-1">
         <div class="col-12 col-sm-5 col-md-6 col-lg-7" style="background-color:#E2D1B1;" id="vue-el-w">
             <div id="left-list" class="h-100">
                 <div class="row" id="util-row">
@@ -66,7 +66,7 @@
 
         </div>
         <div class="col-12 col-sm-7 col-md-6 col-lg-5">
-            <div style="background-color:#FFF9EF;" class="ml-1 pl-2 pr-2">
+            <div style="background-color:#FFF9EF;" class="ml-1 mt-1 mr-2 pl-2 pr-2">
                 <div id="vue-el-s" class="mb-0">
                     <form id="storage-search" v-on:submit.prevent="searchIngredients()" class="form-inline mt-2 ml-2 mb-2" style="display: inline-block;">
                         <input
@@ -475,7 +475,7 @@
                     let leftHeight = windowHeight - utilHeight - navHeight;
                     document.getElementById('works-wishlist').style.height = `${leftHeight}px`;
 
-                    let rightElHeight = (windowHeight - navHeight) / 2;
+                    let rightElHeight = (windowHeight - navHeight) / 2 - 2;
                     let storageTbodyHeight = rightElHeight - $('#storage-search').outerHeight(true) - $('#storage-thead').outerHeight(true);
                     document.getElementById('storage-tbody').style.height = `${storageTbodyHeight}px`;
                     let shoppinglistTbodyHeight = rightElHeight - $('#shoppinglist-title').outerHeight(true) - $('#shoppinglist-add').outerHeight(true) - $('#shoppinglist-thead').outerHeight(true);

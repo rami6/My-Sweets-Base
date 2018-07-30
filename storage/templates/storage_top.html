@@ -6,50 +6,52 @@
 
 {% block content %}
 <div id="vue-el-s" style="background-color:#FFF9EF;" class="h-100 p-4 mt-2">
-    <form v-on:submit.prevent="addIngredient()" class="form-inline m-2">
-        <input
-            type="text"
-            class="form-control"
-            id="name"
-            placeholder="Name"
-            v-model="newIngredient.name">
-
-        <div class="form-group ml-2">
-            <label for="expiration_date">Expiration Date: </label>
+    <div id="util-row" class="mb-4">
+        <form v-on:submit.prevent="addIngredient()" class="form-inline m-2">
             <input
-                type="date"
+                type="text"
                 class="form-control"
-                id="expiration_date"
-                v-model="newIngredient.expiration_date">
-        </div>
-        <button type="submit" class="btn btn-dark ml-1">Add</button>
-    </form>
-    <form v-on:submit.prevent="searchIngredients()" class="form-inline mt-2 ml-2" style="display: inline-block">
-        <input
-            type="text"
-            class="form-control"
-            id="word"
-            placeholder="Search"
-            v-model="word">
-    </form>
-    <table class="table mt-4">
-        <thead>
+                id="name"
+                placeholder="Name"
+                v-model="newIngredient.name">
+
+            <div class="form-group ml-2">
+                <label for="expiration_date">Expiration Date: </label>
+                <input
+                    type="date"
+                    class="form-control"
+                    id="expiration_date"
+                    v-model="newIngredient.expiration_date">
+            </div>
+            <button type="submit" class="btn btn-dark ml-1">Add</button>
+        </form>
+        <form v-on:submit.prevent="searchIngredients()" class="form-inline mt-2 ml-2" style="display: inline-block">
+            <input
+                type="text"
+                class="form-control"
+                id="word"
+                placeholder="Search"
+                v-model="word">
+        </form>
+    </div>
+    <table class="table">
+        <thead id="storage-thead" style="display: block;">
           <tr>
-            <th scope="col" v-on:click="switchSort('name')">Name</th>
-            <th scope="col" v-on:click="switchSort('expiration')">Expiration Date</th>
-            <th scope="col"></th>
-            <th scope="col"></th>
+            <th scope="col" v-on:click="switchSort('name')" style="width: 450px">Name</th>
+            <th scope="col" v-on:click="switchSort('expiration')" style="width: 450px">Expiration Date</th>
+            <th scope="col" style="width: 80px"></th>
+            <th scope="col" style="width: 80px"></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="storage-tbody" style="overflow-y: scroll; display: block;">
             <tr v-for="ingredient in ingredients">
-                <td v-on:dblclick="getIngredient(ingredient.id, 'edit')">${ingredient.name}</td>
-                <td v-on:dblclick="getIngredient(ingredient.id, 'edit')"><span v-if="ingredient.expiration_date">${ingredient.expiration_date}</span></td>
-                <td>
+                <td v-on:dblclick="getIngredient(ingredient.id, 'edit')" style="width: 450px">${ingredient.name}</td>
+                <td v-on:dblclick="getIngredient(ingredient.id, 'edit')" style="width: 450px"><span v-if="ingredient.expiration_date">${ingredient.expiration_date}</span></td>
+                <td style="width: 80px">
                 {% load static %}
                 <img v-if="ingredient.is_expired" src='{% static "image/caution-mark.png" %}' alt="expired" class="float-left" height="23px" />
                 </td>
-                <td v-on:click="getIngredient(ingredient.id, 'delete')" class="text-secondary">&times;</td>
+                <td v-on:click="getIngredient(ingredient.id, 'delete')" class="text-secondary" style="width: 80px">&times;</td>
             </tr>
         </tbody>
     </table>
@@ -62,5 +64,17 @@
 {% block extra_js %}
     <script type="text/javascript">
         {% include 'snippets/storage.js' %}
+    </script>
+    <script>
+        function manageTbodyHeight() {
+            let navHeight = $('#nav').outerHeight(true);
+            let utilHeight = $('#util-row').outerHeight(true);
+            let windowHeight = $('#vue-el-s').outerHeight(true);
+            let storageTbodyHeight = windowHeight - navHeight - utilHeight - $('#storage-thead').outerHeight(true);
+            document.getElementById('storage-tbody').style.height = `${storageTbodyHeight}px`;
+        }
+
+        manageTbodyHeight();
+        window.addEventListener("resize", manageTbodyHeight, false);
     </script>
 {% endblock extra_js %}

@@ -3,7 +3,7 @@
 {% block content %}
     {% load static %}
     <div id="vue-el">
-    <div class="row">
+    <div class="row" id="util-row">
         <div class="col-3">
             <form v-on:submit.prevent="searchWishes()" class="form-inline mt-2" style="display: inline-block">
                 <input
@@ -24,7 +24,7 @@
             <input type="image" src='{% static "image/add-button.png" %}' class="add-button" data-toggle="modal" data-target="#add-wish-modal"/>
         </div>
     </div>
-    <div class="row">
+    <div class="row" style="overflow-y: scroll;" id="wish-list">
         <div class="col-md-3 col-sm-5 p-1" v-for="wish in wishes" v-on:click="getWish(wish.id)">
             <div class="bg-white">
                 <div class="p-2">
@@ -67,6 +67,8 @@
             mounted: function() {
                 this.getWishes();
                 this.setDefaultValue();
+                this.addEvents();
+                this.manageHeights();
             },
             methods: {
                  {% include 'snippets/wishlist_methods.js' %}
@@ -103,7 +105,17 @@
                     if (this.word == null || this.word == "") {
                         this.getWishes();
                     }
-                }
+                },
+                addEvents: function () {
+                    window.addEventListener("resize", this.manageHeights, false);
+                },
+                manageHeights: function () {
+                    let navHeight = $('#nav').outerHeight(true);
+                    let utilHeight = $('#util-row').outerHeight(true);
+                    let windowHeight = window.innerHeight;
+                    let listHeight = windowHeight - utilHeight - navHeight;
+                    document.getElementById('wish-list').style.height = `${listHeight}px`;
+                },
             }
         });
     </script>
