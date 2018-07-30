@@ -194,3 +194,19 @@ deleteWishRecipe: function() {
             console.log(err);
         })
 },
+searchWishes: function() {
+    if (this.word != null && this.word != "") {
+        this.loading = true;
+        axios.get(this.wishAPIUrls[this.sortType] + '/?search=' + this.word)
+            .then((response) => {
+                this.wishes = response.data;
+                this.loading = false;
+            })
+            .catch((err) => {
+                this.loading = false;
+                console.log(err);
+            })
+    } else {
+        this.getWishes();
+    }
+},

@@ -193,3 +193,19 @@ deleteWorkRecipe: function() {
             console.log(err);
         })
 },
+searchWorks: function() {
+    if (this.word != null && this.word != "") {
+        this.loading = true;
+        axios.get(this.workAPIUrls[this.sortType] + '/?search=' + this.word)
+            .then((response) => {
+                this.works = response.data;
+                this.loading = false;
+            })
+            .catch((err) => {
+                this.loading = false;
+                console.log(err);
+            })
+    } else {
+        this.getWorks();
+    }
+},

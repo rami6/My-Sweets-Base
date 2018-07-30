@@ -49,17 +49,21 @@ new Vue({
                     console.log(err);
                 })
         },
-        searchIngredients: function(word) {
-            this.loading = true;
-            axios.get(this.storageAPIUrls[this.sortType] + '/?search=' + word)
-                .then((response) => {
-                    this.ingredients = response.data;
-                    this.loading = false;
-                })
-                .catch((err) => {
-                    this.loading = false;
-                    console.log(err);
-                })
+        searchIngredients: function() {
+            if (this.word != null && this.word != "") {
+                this.loading = true;
+                axios.get(this.storageAPIUrls[this.sortType] + '/?search=' + this.word)
+                    .then((response) => {
+                        this.ingredients = response.data;
+                        this.loading = false;
+                    })
+                    .catch((err) => {
+                        this.loading = false;
+                        console.log(err);
+                    })
+            } else {
+                this.getIngredients();
+            }
         },
         switchSort: function(th) {
             this.loading = true;
@@ -135,12 +139,13 @@ new Vue({
         setDefaultValue: function () {
             this.newIngredient.expiration_date = this.getToday();
         },
-        clearSearch: function() {
-            this.getIngredients();
-            this.word = "";
-        },
         addFocusEvent: function () {
             window.addEventListener("focus", this.getIngredients, false);
         },
+        clearSearch: function () {
+            if (this.word == null || this.word == "") {
+                this.getIngredients();
+            }
+        }
     }
 });

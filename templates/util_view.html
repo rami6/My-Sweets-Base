@@ -10,7 +10,7 @@
 
 <div class="container h-100">
     <div id="vue-el-s">
-        <form id="storage-search" v-on:submit.prevent="searchIngredients(word)" class="form-inline mt-2 ml-2 mb-2" style="display: inline-block;">
+        <form id="storage-search" v-on:submit.prevent="searchIngredients()" class="form-inline mt-2 ml-2 mb-2" style="display: inline-block;">
             <input
                 type="text"
                 class="form-control"
@@ -18,7 +18,6 @@
                 placeholder="Search"
                 v-model="word">
         </form>
-        <span v-on:click="clearSearch()" style="color: #D38E6C" class="align-bottom">Clear</span>
         <div>
             <table class="table table-sm  mt-0 mb-0">
                 <thead id="storage-thead" style="display: block;">

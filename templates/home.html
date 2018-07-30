@@ -13,7 +13,8 @@
                                 class="form-control"
                                 id="word"
                                 placeholder="Search"
-                                v-model="word">
+                                v-model="word"
+                                v-on:input="clearSearch()">
                         </form>
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12">
@@ -61,15 +62,15 @@
         <div class="col-12 col-sm-7 col-md-6 col-lg-5">
             <div style="background-color:#FFF9EF;" class="ml-1 pl-2 pr-2">
                 <div id="vue-el-s" class="mb-0">
-                    <form id="storage-search" v-on:submit.prevent="searchIngredients(word)" class="form-inline mt-2 ml-2 mb-2" style="display: inline-block;">
+                    <form id="storage-search" v-on:submit.prevent="searchIngredients()" class="form-inline mt-2 ml-2 mb-2" style="display: inline-block;">
                         <input
                             type="text"
                             class="form-control"
                             id="word"
                             placeholder="Search"
-                            v-model="word">
+                            v-model="word"
+                            v-on:input="clearSearch()">
                     </form>
-                    <span v-on:click="clearSearch()" style="color: #D38E6C" class="align-bottom mb-1">Clear</span>
                     <div>
                         <table class="table table-sm  mt-0 mb-0">
                             <thead id="storage-thead" style="display: block;">
@@ -279,30 +280,6 @@
                     let day = toTwoDigits(today.getDate());
                     return `${year}-${month}-${day}`;
                 },
-                searchWorks: function() {
-                    this.loading = true;
-                    axios.get(this.workAPIUrls[this.sortType] + '/?search=' + this.word)
-                        .then((response) => {
-                            this.works = response.data;
-                            this.loading = false;
-                        })
-                        .catch((err) => {
-                            this.loading = false;
-                            console.log(err);
-                        })
-                },
-                searchWishes: function() {
-                    this.loading = true;
-                    axios.get(this.wishAPIUrls[this.sortType] + '/?search=' + this.word)
-                        .then((response) => {
-                            this.wishes = response.data;
-                            this.loading = false;
-                        })
-                        .catch((err) => {
-                            this.loading = false;
-                            console.log(err);
-                        })
-                },
                 switchSort: function(button) {
                     this.loading = true;
                     if (button == "title") {
@@ -331,11 +308,6 @@
                         this.searchWishes()
                     }
                 },
-                clearSearch: function() {
-                    this.getWorks();
-                    this.getWishes();
-                    this.word = "";
-                },
                 openRecipe: function(url) {
                     let innerHeight = window.innerHeight;
                     let outerWidth = window.outerWidth;
@@ -346,6 +318,15 @@
                     let attribute_u = 'width=600, height=' + innerHeight + ', left=' + left_u + ', scrollbars=no, resizable=no';
                     window.open('util-view', 'util', attribute_u);
                 },
+                clearSearch: function () {
+                    if (this.word == null || this.word == "") {
+                        if (this.display == "works") {
+                            this.getWorks();
+                        } else {
+                            this.getWishes();
+                        }
+                    }
+                }
             }
         });
     </script>

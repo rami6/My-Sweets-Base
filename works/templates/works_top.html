@@ -5,15 +5,15 @@
     <div id="vue-el">
     <div class="row">
         <div class="col-3">
-            <form v-on:submit.prevent="searchWorks(word)" class="form-inline mt-2" style="display: inline-block;">
+            <form v-on:submit.prevent="searchWorks()" class="form-inline mt-2" style="display: inline-block;">
                 <input
                     type="text"
                     class="form-control"
                     id="word"
                     placeholder="Search"
-                    v-model="word">
+                    v-model="word"
+                    v-on:input="clearSearch()">
             </form>
-            <span v-on:click="clearSearch()" style="color: #D38E6C" class="align-bottom">Clear</span>
         </div>
         <div class="col-8">
             <span>Sort: </span>
@@ -82,18 +82,6 @@
                 setDefaultValue: function () {
                     this.newWork.made_date = this.getToday();
                 },
-                searchWorks: function(word) {
-                    this.loading = true;
-                    axios.get(this.workAPIUrls[this.sortType] + '/?search=' + word)
-                        .then((response) => {
-                            this.works = response.data;
-                            this.loading = false;
-                        })
-                        .catch((err) => {
-                            this.loading = false;
-                            console.log(err);
-                        })
-                },
                 switchSort: function(button) {
                     this.loading = true;
                     if (button == "title") {
@@ -111,10 +99,11 @@
                     }
                     this.getWorks();
                 },
-                clearSearch: function() {
-                    this.getWorks();
-                    this.word = "";
-                },
+                clearSearch: function () {
+                    if (this.word == null || this.word == "") {
+                        this.getWorks();
+                    }
+                }
             }
         });
     </script>
