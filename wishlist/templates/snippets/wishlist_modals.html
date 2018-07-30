@@ -52,6 +52,7 @@
                 id="newWish_image"
                 accept=".jpg, .jpeg, .png"
                 @change="processWishFile($event.target.files, 'add')">
+                 <div id="wish-add-image-error" style="color: darkred" class="text-center"></div>
             </div>
             <div class="form-group">
               <label for="title">Title</label>
@@ -129,6 +130,7 @@
                 id="currentWish_image"
                 accept=".jpg, .jpeg, .png"
                 @change="processWishFile($event.target.files, 'edit')">
+                 <div id="wish-edit-image-error" style="color: darkred" class="text-center"></div>
             </div>
             <div class="form-group">
               <label for="title">Title</label>

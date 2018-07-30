@@ -167,8 +167,20 @@ processWishFile: function(filelist, action) {
     if (!filelist.length) return;
 
     if (action == "add") {
+        if (filelist[0].size > 5242880) {
+            document.getElementById('wish-add-image-error').innerHTML = "Please upload smaller file. Max: 5MB";
+            return;
+        } else {
+            document.getElementById('wish-add-image-error').innerHTML = "";
+        }
         this.newWish.image = filelist[0];
     } else if (action == "edit") {
+        if (filelist[0].size > 5242880) {
+            document.getElementById('wish-edit-image-error').innerHTML = "Please upload smaller file. Max: 5MB";
+            return;
+        } else {
+            document.getElementById('wish-edit-image-error').innerHTML = "";
+        }
         this.currentWish.image = filelist[0];
         const data = URL.createObjectURL(filelist[0]);
         this.currentWish_image = data;

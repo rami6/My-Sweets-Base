@@ -166,8 +166,20 @@ processWorkFile: function(filelist, action) {
     if (!filelist.length) return;
 
     if (action == "add") {
+        if (filelist[0].size > 5242880) {
+            document.getElementById('work-add-image-error').innerHTML = "Please upload smaller file. Max: 5MB";
+            return;
+        } else {
+            document.getElementById('work-add-image-error').innerHTML = "";
+        }
         this.newWork.image = filelist[0];
     } else if (action == "edit") {
+        if (filelist[0].size > 5242880) {
+            document.getElementById('work-edit-image-error').innerHTML = "Please upload smaller file. Max: 5MB";
+            return;
+        } else {
+            document.getElementById('work-edit-image-error').innerHTML = "";
+        }
         this.currentWork.image = filelist[0];
         const data = URL.createObjectURL(filelist[0]);
         this.currentWork_image = data;

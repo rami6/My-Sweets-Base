@@ -52,6 +52,7 @@
                 id="newWork_image"
                 accept=".jpg, .jpeg, .png"
                 @change="processWorkFile($event.target.files, 'add')">
+                 <div id="work-add-image-error" style="color: darkred" class="text-center"></div>
             </div>
             <div class="form-group">
               <label for="title">Title</label>
@@ -138,6 +139,7 @@
                 id="currentWork_image"
                 accept=".jpg, .jpeg, .png"
                 @change="processWorkFile($event.target.files, 'edit')">
+                 <div id="work-edit-image-error" style="color: darkred" class="text-center"></div>
             </div>
             <div class="form-group">
               <label for="title">Title</label>
