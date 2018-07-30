@@ -1,5 +1,5 @@
 # My-Sweets-Base
-This web app helps Sweets makers(Including me!!). Yes, these pictures below are my works :)  
+This web app helps Sweets makers(Including me!!). Yes, sweets pics below are all my works :)  
   
 <img width="1445" alt="screen shot 2018-07-30 at 12 41 26 am" src="https://user-images.githubusercontent.com/30137645/43388000-d38683da-939c-11e8-8d68-55fed7aae036.png">
 
@@ -33,4 +33,4 @@ When you click recipe link, you can see recipe and your storage at the same time
 - Django REST Framework(library)
 - PostgreSQL
   
-Now on my way of deploying!
+Now I'm on my way of deploying!
