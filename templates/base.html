@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang=en>
+<html lang=en class="h-100">
 <head>
 <meta charset="utf-8">
 <title>{% block head_title %}My Sweets Base{% endblock head_title %}</title>
@@ -8,10 +8,10 @@
 
 {% include 'snippets/css.html' %}
 </head>
-<body>
+<body class="h-100">
 {% include 'snippets/nav.html' %}
 
-<div class="container">
+<div class="container h-100">
 {% block content %}{% endblock content %}
 </div>
 
