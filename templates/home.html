@@ -34,6 +34,12 @@
                     </div>
                 </div>
                 <div class="row" id="works-wishlist" style="overflow-y: scroll;">
+                    <div v-if="display == 'works' && works.length == 0" class="d-flex align-items-center justify-content-center w-100">
+                        <button type="button" class="btn m-2" data-toggle="modal" data-target="#add-work-modal">Add an Item to Works</button>
+                    </div>
+                    <div v-if="display == 'wish' && wishes.length == 0" class="d-flex align-items-center justify-content-center w-100">
+                        <button type="button" class="btn m-2" data-toggle="modal" data-target="#add-wish-modal">Add an Item to Wish List</button>
+                    </div>
                     <div v-if="display == 'works'" class="col-lg-4 col-md-6 col-sm-12 p-1" v-for="work in works" v-on:click="getWork(work.id)">
                         <div class="bg-white">
                             <div class="p-2">
