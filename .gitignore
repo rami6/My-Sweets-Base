@@ -2,6 +2,7 @@ myvenv/
 .vscode
 .idea/
 etc/
+objectdb
 
 ### Django ###
 *.log
