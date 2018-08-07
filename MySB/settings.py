@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-from etc.config import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,12 +21,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY = SECRETKEY
+SECRET_KEY = 'lml5s%a++_^3tf$ie=7d_ymed2_(^q8lgl**3xvs#z$2^98coy'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['.herokuapp.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -83,12 +82,8 @@ WSGI_APPLICATION = 'MySB.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': NAME,
-        'USER': USER,
-        'PASSWORD': PASSWORD,
-        'HOST': HOST,
-        'PORT': PORT,
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -158,18 +153,3 @@ LOGIN_URL = '/'
 
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
-DEFAULT_FROM_EMAIL = 'mysweetsbase@localhost'
-
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-
-X_FRAME_OPTIONS = 'DENY'
-SECURE_HSTS_SECONDS = 3600
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_SSL_REDIRECT = True
-SECURE_HSTS_PRELOAD = True
-
-ADMINS = ADMINS
-
