@@ -12,20 +12,24 @@ We need to refer those information when we plan sweets to make next, but some in
   
 ## Features
 Integrate all information which helps sweets making.  
-- Works: History of user’s works with useful information for next time
-  - Picture, Recipes, Note 
-- Wish List: Records of sweets which fascinate user
-  - Picture, Recipes, Note
-- Storage: Ingredients info with expiration date
+- `Works`: History of user’s works with useful information for next time
+  - Image, Recipes, Note 
+- `Wish List`: Records of sweets which fascinate user
+  - Image, Recipes, Note
+- `Storage`: Ingredients info with expiration date
   - Expiration date, Alert for expired ingredients
-- Dashboard: Where user plans next sweets
-  - Each information above, Shopping list
+- `Dashboard`: Where user plans next sweets
+  - Fields for each modules above, Shopping list
   
 You can add multiple recipes
 <img width="1437" alt="screen shot 2018-07-30 at 12 41 49 am" src="https://user-images.githubusercontent.com/30137645/43388377-c48012d8-939d-11e8-9003-6edd4ebff676.png">
   
 When you click recipe link, you can see recipe and your storage at the same time while edit your shopping list.
 <img width="1440" alt="screen shot 2018-07-30 at 12 44 38 am" src="https://user-images.githubusercontent.com/30137645/43388538-4c1ff2ee-939e-11e8-9e20-df742c472f41.png">
+
+## Upcoming Features
+- Recommendation: Recommend sweets to make next from `Works` and `Wish List` according to the inside of `Storage`
+- Image auto fill: For `Wish List`, allow user to pick an image from recipe page 
 
 ## Ingredients of this app
 - Vue.js
@@ -36,7 +40,7 @@ When you click recipe link, you can see recipe and your storage at the same time
 For deploy, I use following technologies:
 - Heroku - server
 - PostgreSQL - database(replacement of SQLite)
-- AWS S3 - storage for pictures which users upload
+- Amazon S3 - storage for pictures which users upload
   
-Now I'm working on deploying in a private brunch. The branch contains sensitive data, so I will never push to GitHub.  
+Now I'm working to deploy this app in a private brunch. The branch contains sensitive data, so I will never push to GitHub.  
 However, features in this repogitory are keeping up to date because I will try locally and update this master branch first.
