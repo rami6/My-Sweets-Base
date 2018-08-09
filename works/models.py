@@ -1,11 +1,11 @@
 import os
 
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from django.conf import settings
-
-from .utilities.utils import rotate_image
+from PIL import Image as Img
+from PIL import ExifTags
+from io import BytesIO
+from django.core.files import File
 import datetime
 
 
@@ -19,11 +19,27 @@ class Work(models.Model):
     def __str__(self):
         return self.title
 
-@receiver(post_save, sender=Work, dispatch_uid="update_image_work")
-def update_image(sender, instance, **kwargs):
-  if instance.image:
-    fullpath = settings.BASE_DIR + "/MySB" + instance.image.url
-    rotate_image(fullpath)
+    def save(self, *args, **kwargs):
+        if self.image:
+            pilImage = Img.open(BytesIO(self.image.read()))
+            for orientation in ExifTags.TAGS.keys():
+                if ExifTags.TAGS[orientation] == 'Orientation':
+                    break
+            exif = dict(pilImage._getexif().items())
+
+            if exif[orientation] == 3:
+                pilImage = pilImage.rotate(180, expand=True)
+            elif exif[orientation] == 6:
+                pilImage = pilImage.rotate(270, expand=True)
+            elif exif[orientation] == 8:
+                pilImage = pilImage.rotate(90, expand=True)
+
+            output = BytesIO()
+            pilImage.save(output, format='JPEG', quality=75)
+            output.seek(0)
+            self.image = File(output, self.image.name)
+
+        return super(Work, self).save(*args, **kwargs)
 
 
 class Recipe(models.Model):

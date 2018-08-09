@@ -9,6 +9,9 @@ class WorkSerializer(serializers.ModelSerializer):
         model = Work
         fields = '__all__'
 
+    def create(self, validated_data):
+        return Work.objects.create(**validated_data)
+
 
 class RecipeSerializer(serializers.ModelSerializer):
     class Meta:
