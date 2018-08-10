@@ -65,8 +65,10 @@ addWork: function() {
                 this.getWorks();
             }
             this.newWork = { 'title': null, 'made_date': this.getToday(), 'note': "", 'image': null };
+            this.newWork_image = null;
             document.getElementById('newWork_image').value = null;
             $("#add-work-modal").modal('toggle');
+            $('#newWork_image_view').css('transform', 'rotate(0deg)');
         })
         .catch((err) => {
             this.loading = false;
@@ -163,9 +165,13 @@ deleteWork: function() {
         })
 },
 processWorkFile: function(filelist, action) {
-    if (!filelist.length) return;
-
     if (action == "add") {
+        if (!filelist.length) {
+            this.newWork_image = null;
+            $('#newWork_image_view').css('transform', 'rotate(0deg)');
+            return;
+        }
+
         if (filelist[0].size > 5242880) {
             document.getElementById('work-add-image-error').innerHTML = "Please upload smaller file. Max: 5MB";
             return;
@@ -173,7 +179,15 @@ processWorkFile: function(filelist, action) {
             document.getElementById('work-add-image-error').innerHTML = "";
         }
         this.newWork.image = filelist[0];
+
+        this.rotateWorkImage(this.newWork.image, '#newWork_image_view');
+
+        const data = URL.createObjectURL(this.newWork.image);
+        this.newWork_image = data;
     } else if (action == "edit") {
+        if (!filelist.length) {
+            return;
+        }
         if (filelist[0].size > 5242880) {
             document.getElementById('work-edit-image-error').innerHTML = "Please upload smaller file. Max: 5MB";
             return;
@@ -190,67 +204,67 @@ processWorkFile: function(filelist, action) {
 },
 rotateWorkImage: function(image, view_id) {
     let rotation = {
-          1: 'rotate(0deg)',
-          3: 'rotate(180deg)',
-          6: 'rotate(90deg)',
-          8: 'rotate(270deg)'
-        };
+      1: 'rotate(0deg)',
+      3: 'rotate(180deg)',
+      6: 'rotate(90deg)',
+      8: 'rotate(270deg)'
+    };
 
-        function _arrayBufferToBase64( buffer ) {
-          let binary = '';
-          let bytes = new Uint8Array( buffer );
-          let len = bytes.byteLength;
-          for (let i = 0; i < len; i++) {
-            binary += String.fromCharCode( bytes[ i ] )
+    function _arrayBufferToBase64( buffer ) {
+      let binary = '';
+      let bytes = new Uint8Array( buffer );
+      let len = bytes.byteLength;
+      for (let i = 0; i < len; i++) {
+        binary += String.fromCharCode( bytes[ i ] )
+      }
+      return window.btoa( binary );
+    }
+
+    let orientation = function(file, callback) {
+      let fileReader = new FileReader();
+      fileReader.onloadend = function() {
+        let base64img = "data:"+file.type+";base64," + _arrayBufferToBase64(fileReader.result);
+        let scanner = new DataView(fileReader.result);
+        let idx = 0;
+        let value = 1; // Non-rotated is the default
+        if(fileReader.result.length < 2 || scanner.getUint16(idx) != 0xFFD8) {
+          if(callback) {
+            callback(base64img, value);
           }
-          return window.btoa( binary );
+          return;
         }
-
-        let orientation = function(file, callback) {
-          let fileReader = new FileReader();
-          fileReader.onloadend = function() {
-            let base64img = "data:"+file.type+";base64," + _arrayBufferToBase64(fileReader.result);
-            let scanner = new DataView(fileReader.result);
-            let idx = 0;
-            let value = 1; // Non-rotated is the default
-            if(fileReader.result.length < 2 || scanner.getUint16(idx) != 0xFFD8) {
-              if(callback) {
-                callback(base64img, value);
-              }
-              return;
-            }
-            idx += 2;
-            let maxBytes = scanner.byteLength;
-            while(idx < maxBytes - 2) {
-              let uint16 = scanner.getUint16(idx);
+        idx += 2;
+        let maxBytes = scanner.byteLength;
+        while(idx < maxBytes - 2) {
+          let uint16 = scanner.getUint16(idx);
+          idx += 2;
+          switch(uint16) {
+            case 0xFFE1:
+              let exifLength = scanner.getUint16(idx);
+              maxBytes = exifLength - idx;
               idx += 2;
-              switch(uint16) {
-                case 0xFFE1:
-                  let exifLength = scanner.getUint16(idx);
-                  maxBytes = exifLength - idx;
-                  idx += 2;
-                  break;
-                case 0x0112:
-                  value = scanner.getUint16(idx + 6, false);
-                  maxBytes = 0;
-                  break;
-              }
-            }
-            if(callback) {
-              callback(base64img, value);
-            }
-          };
-          fileReader.readAsArrayBuffer(file);
-        };
-
-        if(image) {
-          orientation(image, function(base64img, value) {
-            let rotated = $(view_id).attr('src', base64img);
-            if(value) {
-              rotated.css('transform', rotation[value]);
-            }
-          });
+              break;
+            case 0x0112:
+              value = scanner.getUint16(idx + 6, false);
+              maxBytes = 0;
+              break;
+          }
         }
+        if(callback) {
+          callback(base64img, value);
+        }
+      };
+      fileReader.readAsArrayBuffer(file);
+    };
+
+    if(image) {
+      orientation(image, function(base64img, value) {
+        let rotated = $(view_id).attr('src', base64img);
+        if(value) {
+          rotated.css('transform', rotation[value]);
+        }
+      });
+    }
 },
 openEditWorkModal: function() {
     $("#work-detail-modal").modal('toggle');

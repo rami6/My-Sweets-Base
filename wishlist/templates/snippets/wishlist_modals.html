@@ -46,6 +46,11 @@
         <div class="modal-body">
             <div class="form-group">
               <label for="image">Image</label>
+              <div>
+                <img v-if="newWish_image" v-bind:src="newWish_image" class="w-25 mb-1" id="newWish_image_view">
+                {% load static %}
+                <img v-else src="{% static "image/default_image.png" %}" class="w-25 mb-1" id="newWish_image_view">
+              </div>
               <input
                 type="file"
                 class="form-control"
