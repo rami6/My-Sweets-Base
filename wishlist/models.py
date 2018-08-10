@@ -18,7 +18,7 @@ class Wish(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        if self.image:
+        if self.image  and self.image.name.lower().endswith(('.jpg', '.jpeg')):
             pilImage = Img.open(BytesIO(self.image.read()))
             for orientation in ExifTags.TAGS.keys():
                 if ExifTags.TAGS[orientation] == 'Orientation':
