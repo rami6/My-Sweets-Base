@@ -10,6 +10,6 @@ psycopg2==2.7.5
 psycopg2-binary==2.7.5
 pylint==1.9.2
 pytz==2018.4
-rope==0.10.7
+rope==0.11.0
 six==1.11.0
 wrapt==1.10.11
