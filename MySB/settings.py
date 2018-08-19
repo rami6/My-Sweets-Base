@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-from etc.config import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -152,10 +151,15 @@ LOGIN_REDIRECT_URL = '/home/'
 
 LOGIN_URL = '/'
 
-EMAIL_HOST = EMAIL_HOST
-EMAIL_PORT = EMAIL_PORT
-EMAIL_HOST_USER = EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
-EMAIL_USE_TLS = True
+# To enable to send password reset email, register one of email hosting services and
+# set following arguments.
+#
+# Assign values:
+# EMAIL_HOST = EMAIL_HOST
+# EMAIL_PORT = EMAIL_PORT
+# EMAIL_HOST_USER = EMAIL_HOST_USER
+# EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
 
-DEFAULT_FROM_EMAIL = 'noreply@mysweetsbase'
+# Just uncomment:
+# EMAIL_USE_TLS = True
+# DEFAULT_FROM_EMAIL = 'noreply@mysweetsbase'
