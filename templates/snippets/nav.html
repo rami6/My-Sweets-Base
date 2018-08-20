@@ -27,13 +27,6 @@
                     <li><a class="dropdown-item" href="/logout">Logout</a></li>
                 </ul>
             </li>
-        {% elif request.path != signup %}
-            <li class="nav-item" data-toggle="modal" data-target="#login-modal">
-                <a class="nav-link" href="#">Log In</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/signup/">Sign Up</a>
-            </li>
         {% endif %}
     </ul>
   </div>

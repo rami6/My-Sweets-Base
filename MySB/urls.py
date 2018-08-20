@@ -11,7 +11,7 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.custom_login, name='login'),
+    path('', views.custom_login, name='landing'),
     path('signup/', views.signup, name='signup'),
     path('logout/', logout, {'template_name': 'accounts/logout.html'}),
     path('privacy-policy/', TemplateView.as_view(template_name='privacy_policy.html'), name='privacy_policy'),
