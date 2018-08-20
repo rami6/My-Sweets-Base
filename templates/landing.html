@@ -56,8 +56,11 @@
                 <input type="hidden" name="next" value="{{ next }}" />
                 </form>
 
+                {% comment %}
+                {# Uncomment when you update settings for password reset mail  #}
                 {# Assumes you setup the password_reset view in your URLconf #}
                 <p><a href="{% url 'reset_password' %}">Lost password?</a></p>
+                {% endcomment %}
 
             </div>
           </div>
