@@ -19,3 +19,7 @@ body {
 .add-button {
     margin-top: 10px;
 }
+
+.link-custom a {
+    color: #C75E44 !important;
+}
