@@ -145,6 +145,7 @@ LOGIN_EXEMPT_URLS = (
     r'^signup/$',
     r'^logout/$',
     r'^reset-password/.*$',
+    r'^privacy-policy/.*',
 )
 
 LOGIN_REDIRECT_URL = '/home/'
