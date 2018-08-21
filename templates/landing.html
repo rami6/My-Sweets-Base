@@ -52,15 +52,11 @@
                 </tr>
                 </table>
 
-                <input type="submit" value="login" />
+                <input type="submit" value="Login" class="btn mt-2 mb-2" style="background-color: #E7CA80; color: #FFFFFF"/>
                 <input type="hidden" name="next" value="{{ next }}" />
                 </form>
 
-                {% comment %}
-                {# Uncomment when you update settings for password reset mail  #}
-                {# Assumes you setup the password_reset view in your URLconf #}
-                <p><a href="{% url 'reset_password' %}">Lost password?</a></p>
-                {% endcomment %}
+                <p class="link-custom"><a href="{% url 'reset_password' %}">Lost password?</a></p>
 
             </div>
           </div>

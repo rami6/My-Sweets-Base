@@ -11,20 +11,16 @@
             {% endfor %}
           </p>
         {% endfor %}
-    <div style="background-color: #FFFCF8" class="pt-3 pr-3 pb-3 m-3">
-        <div class="ml-3 mb-1">Terms and Conditions</div>
+        <div style="background-color: #FFFCF8" class="pt-3 pr-3 pl-3 pb-2 m-3">
             <small>
-                <ul>
-                    <li>This is not an official service, but a portfolio application of a developer, Miho Maehara.
-                        Therefore, this application including your data might be deleted at some point. Please enjoy the "My Sweets Base" as a trial.</li>
-                    <li>To prevent security risks, I do not require your email address. In other words, there is no way to reset your password.
-                        When you forget your username and/or password, please create new account.</li>
-                </ul>
+                <div>Registration of email address is optional.</div>
+                <div>If you want to reset password when you forget it, please register it so that we can send you an email with reset password URL.</div>
+                <div>You can register/edit/delete your email address later.</div>
             </small>
-        <div class="ml-4">
-            <input type="checkbox" id="agreement-check" class="mr-1" onclick="toggleButtonDisable()"><label for="agreement-check">I got it!</label>
+            <div>
+                <input type="checkbox" id="agreement-check" class="mr-1" onclick="toggleButtonDisable()"><label for="agreement-check">I got it!</label>
+            </div>
         </div>
-    </div>
         <button type="submit" class="btn m-2" id="submit-button" disabled>Sign Up</button>
     </form>
     <div><small class="link-custom">By signing up, you agree to our Terms and Conditions, and <a href="/privacy-policy">Privacy Policy</a>.</small></div>
