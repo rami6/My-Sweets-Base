@@ -8,8 +8,11 @@
           <p>
             {% if field.label != "Password" %}
                 {{ field.label_tag }} {{ field }}
+                {% if field.label == "Email" %}
+                    <small>(Optional)</small>
+                {% endif %}
                 {% for error in field.errors %}
-                  <p style="color: red">{{ error }}</p>
+                   <small><div style="color: #c10000" class="ml-4 mt-0">{{ error }}</div></small>
                 {% endfor %}
             {% endif %}
           </p>

@@ -6,8 +6,11 @@
         {% for field in form %}
           <p>
             {{ field.label_tag }} {{ field }}
+            {% if field.label == "Email" %}
+                <small>(Optional)</small>
+            {% endif %}
             {% for error in field.errors %}
-              <p style="color: red">{{ error }}</p>
+              <small><div style="color: #c10000" class="ml-4 mt-0">{{ error }}</div></small>
             {% endfor %}
           </p>
         {% endfor %}
@@ -23,7 +26,7 @@
         </div>
         <button type="submit" class="btn m-2" id="submit-button" disabled>Sign Up</button>
     </form>
-    <div><small class="link-custom">By signing up, you agree to our Terms and Conditions, and <a href="/privacy-policy">Privacy Policy</a>.</small></div>
+    <div><small class="link-custom">By signing up, you agree to our <a href="/privacy-policy">Privacy Policy</a>.</small></div>
     <br>
     <a href="/">Back to the top page</a>
 {% endblock content %}
