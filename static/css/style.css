@@ -23,3 +23,18 @@ body {
 .link-custom a {
     color: #C75E44 !important;
 }
+
+.primary-btn {
+    background-color: #C75E44;
+    color: #FFFFFF;
+}
+
+.secondary-btn {
+    background-color: #E7CA80;
+    color: #FFFFFF;
+}
+
+.third-btn {
+    border-color: #999999;
+    color: #999999;
+}
