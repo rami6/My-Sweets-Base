@@ -90,7 +90,7 @@
                     v-model="recipe.link_title" >
                 </div>
             </div>
-            <div class="text-right"><a href="#" v-on:click="appendWishRecipeList">Add more recipe</a></div>
+            <div class="text-right link-custom"><a href="#" v-on:click="appendWishRecipeList">Add more recipe</a></div>
             <div class="form-group">
               <label for="note">Note</label>
               <textarea
@@ -103,7 +103,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn secondary-btn" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn primary-btn">Save changes</button>
+          <button type="submit" class="btn primary-btn">Add</button>
         </div>
         </form>
       </div>
@@ -150,7 +150,7 @@
             <div v-for="recipe in currentWish_recipes">
                 <hr>
                  <div v-bind:id="'wishRecipe-' + recipe.id" >
-                    <div class="text-right"><a href="#" v-on:click="setDeletedWishRecipe(recipe)" data-toggle="modal" data-target="#delete-wish-recipe-modal">Delete this field</a></div>
+                    <div class="text-right link-custom"><a href="#" v-on:click="setDeletedWishRecipe(recipe)" data-toggle="modal" data-target="#delete-wish-recipe-modal">Delete this field</a></div>
                     <div class="form-group">
                       <label for="title">Recipe URL</label>
                       <input
@@ -192,7 +192,7 @@
                     v-model="recipe.link_title" >
                 </div>
             </div>
-            <div class="text-right"><a href="#" v-on:click="appendCurrentWishRecipeList">Add more recipe</a></div>
+            <div class="text-right link-custom"><a href="#" v-on:click="appendCurrentWishRecipeList">Add more recipe</a></div>
             <div class="form-group">
               <label for="note">Note</label>
               <textarea
