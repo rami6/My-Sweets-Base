@@ -27,9 +27,9 @@
     <div class="row" style="overflow-y: scroll;" id="wish-list">
         <div class="col-md-3 col-sm-5 p-1" v-for="wish in wishes" v-on:click="getWish(wish.id)">
             <div class="bg-white">
-                <div class="p-2">
+                <div class="p-2 ">
                     <h4 class="text-center">${wish.title}</h4>
-                    <img v-bind:src="wish.image" class="w-100">
+                    <img id="image" v-bind:src="wish.image" style="object-fit: cover; width: 100%;" v-bind:style="{height: image_height}">
                     <div class="text-right">${wish.date_created}</div>
                 </div>
             </div>
@@ -64,6 +64,10 @@
                 sortType: "dateD",
                 wishAPIUrls:{ 'titleA': '/api/wish-list/t-a', 'titleD': '/api/wish-list/t-d', 'dateA': '/api/wish-list/d-a', 'dateD': '/api/wish-list/d-d' },
                 display: null,
+                image_height: '200px',
+            },
+            beforeMount: function() {
+                this.setImageHeight();
             },
             mounted: function() {
                 this.getWishes();
@@ -109,6 +113,7 @@
                 },
                 addEvents: function () {
                     window.addEventListener("resize", this.manageHeights, false);
+                    window.addEventListener("resize", this.setImageHeight, false);
                 },
                 manageHeights: function () {
                     let navHeight = $('#nav').outerHeight(true);
@@ -117,6 +122,10 @@
                     let listHeight = windowHeight - utilHeight - navHeight;
                     document.getElementById('wish-list').style.height = `${listHeight}px`;
                 },
+                setImageHeight: function() {
+                    let imageWidth = $('#image').outerWidth(true);
+                    this.image_height = `${imageWidth}px`;
+                }
             }
         });
     </script>

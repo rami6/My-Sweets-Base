@@ -29,7 +29,7 @@
             <div class="bg-white">
                 <div class="p-2">
                     <h4 class="text-center">${work.title}</h4>
-                    <img v-bind:src="work.image" class="w-100">
+                    <img id="image" v-bind:src="work.image" style="object-fit: cover; width: 100%;" v-bind:style="{height: image_height}">
                     <div class="text-right">${work.made_date}</div>
                 </div>
             </div>
@@ -64,6 +64,10 @@
                 sortType: "dateD",
                 workAPIUrls:{ 'titleA': '/api/works/t-a', 'titleD': '/api/works/t-d', 'dateA': '/api/works/d-a', 'dateD': '/api/works/d-d' },
                 display: null,
+                image_height: '200px',
+            },
+            beforeMount: function() {
+                this.setImageHeight();
             },
             mounted: function() {
                 this.getWorks();
@@ -109,6 +113,7 @@
                 },
                 addEvents: function () {
                     window.addEventListener("resize", this.manageHeights, false);
+                    window.addEventListener("resize", this.setImageHeight, false);
                 },
                 manageHeights: function () {
                     let navHeight = $('#nav').outerHeight(true);
@@ -117,6 +122,10 @@
                     let listHeight = windowHeight - utilHeight - navHeight;
                     document.getElementById('works-list').style.height = `${listHeight}px`;
                 },
+                setImageHeight: function() {
+                    let imageWidth = $('#image').outerWidth(true);
+                    this.image_height = `${imageWidth}px`;
+                }
             }
         });
     </script>
