@@ -4,7 +4,7 @@
     {% load static %}
     <div id="vue-el">
     <div class="row" id="util-row">
-        <div class="col-3">
+        <div class="col-lg-3 col-md-5 col-sm-12 col-12">
             <form v-on:submit.prevent="searchWishes()" class="form-inline mt-2" style="display: inline-block">
                 <input
                     type="text"
@@ -15,17 +15,17 @@
                     v-on:input="clearSearch()">
             </form>
         </div>
-        <div class="col-8">
+        <div class="col-lg-8 col-md-6 col-sm-11 col-11">
             <span>Sort: </span>
-            <button type="button" class="btn btn-info m-2" v-on:click="switchSort('title')">Title</button>
-            <button type="button" class="btn btn-info m-2" v-on:click="switchSort('date')">Added Date</button>
+            <button type="button" class="btn fourth-btn m-2" v-on:click="switchSort('title')">Title</button>
+            <button type="button" class="btn fourth-btn m-2" v-on:click="switchSort('date')">Added Date</button>
         </div>
         <div class="col-1">
             <input type="image" src='{% static "image/add-button.png" %}' class="add-button" data-toggle="modal" data-target="#add-wish-modal"/>
         </div>
     </div>
     <div class="row" style="overflow-y: scroll;" id="wish-list">
-        <div class="col-md-3 col-sm-5 p-1" v-for="wish in wishes" v-on:click="getWish(wish.id)">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 p-1" v-for="wish in wishes" v-on:click="getWish(wish.id)">
             <div class="bg-white">
                 <div class="p-2 ">
                     <h4 class="text-center">${wish.title}</h4>
