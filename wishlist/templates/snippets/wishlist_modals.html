@@ -14,7 +14,7 @@
               <div class="col-md-4"><img v-bind:src="currentWish.image" class="w-100 "></div>
               <div class="col-md-8">
                 <div v-for="recipe in currentWish_recipes">
-                    <a v-if="display" v-on:click="toggleIframe()" target="recipe-frame" v-bind:href="recipe.url">${recipe.link_title}</a>
+                    <a v-if="display" v-on:click="openRecipe(recipe.url)" href="#">${recipe.link_title}</a>
                     <a v-else target="_blank" v-bind:href="recipe.url">${recipe.link_title}</a>
                 </div>
                 <div>${currentWish.date_created}</div>
