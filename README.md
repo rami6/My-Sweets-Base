@@ -1,7 +1,7 @@
 # My-Sweets-Base
 This web app helps Sweets makers(Including me!!). Yes, sweets pics below are all my works :)  
   
-<img width="1445" alt="screen shot 2018-07-30 at 12 41 26 am" src="https://user-images.githubusercontent.com/30137645/43388000-d38683da-939c-11e8-8d68-55fed7aae036.png">
+<img width="1386" alt="screen shot 2018-08-23 at 1 59 26 am" src="https://user-images.githubusercontent.com/30137645/44516451-fe26a800-a679-11e8-84af-c95ce610a4e6.png">
 
 ## Introduction
 Sweets makers keep a lot of information in a variety of places. 
@@ -22,7 +22,7 @@ Integrate all information which helps sweets making.
   - Fields for each modules above, Shopping list
   
 You can add multiple recipes
-<img width="1437" alt="screen shot 2018-07-30 at 12 41 49 am" src="https://user-images.githubusercontent.com/30137645/43388377-c48012d8-939d-11e8-9003-6edd4ebff676.png">
+<img width="1382" alt="screen shot 2018-08-23 at 2 02 20 am" src="https://user-images.githubusercontent.com/30137645/44516579-5067c900-a67a-11e8-9f32-880d9b531df8.png">
   
 When you click recipe link, you can see recipe and your storage at the same time while edit your shopping list.
 <img width="1440" alt="screen shot 2018-07-30 at 12 44 38 am" src="https://user-images.githubusercontent.com/30137645/43388538-4c1ff2ee-939e-11e8-9e20-df742c472f41.png">
