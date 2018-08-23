@@ -7,6 +7,10 @@ class WishViewSet(viewsets.ModelViewSet):
     queryset = Wish.objects.all()
     serializer_class = WishSerializer
 
+    def partial_update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return self.update(request, *args, **kwargs)
+    
 
 class WishRecipeViewSet(viewsets.ModelViewSet):
     queryset = WishRecipe.objects.all()

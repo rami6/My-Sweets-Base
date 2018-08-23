@@ -5,6 +5,7 @@ from PIL import ExifTags
 from io import BytesIO
 from django.core.files import File
 import datetime
+import types
 
 
 class Work(models.Model):
@@ -18,6 +19,15 @@ class Work(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
+        if not self.id:
+            self.set_image()
+        else:
+            this = Work.objects.get(id=self.id)
+            if this.image != self.image:
+                self.set_image()
+        return super(Work, self).save(*args, **kwargs)
+
+    def set_image(self, *args, **kwargs):
         if self.image and self.image.name.lower().endswith(('.jpg', '.jpeg')):
             pilImage = Img.open(BytesIO(self.image.read()))
             for orientation in ExifTags.TAGS.keys():
@@ -36,8 +46,6 @@ class Work(models.Model):
             pilImage.save(output, format='JPEG', quality=75)
             output.seek(0)
             self.image = File(output, self.image.name)
-
-        return super(Work, self).save(*args, **kwargs)
 
 
 class Recipe(models.Model):

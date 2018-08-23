@@ -103,7 +103,7 @@ updateWish: function() {
     formData.append("note", this.currentWish.note);
 
     this.loading = true;
-    axios.put(`/api/wish/${this.currentWish.id}/`, formData, {
+    axios.patch(`/api/wish/${this.currentWish.id}/`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }

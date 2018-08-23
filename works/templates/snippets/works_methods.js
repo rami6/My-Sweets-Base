@@ -105,7 +105,7 @@ updateWork: function() {
     formData.append("note", this.currentWork.note);
 
     this.loading = true;
-    axios.put(`/api/work/${this.currentWork.id}/`, formData, {
+    axios.patch(`/api/work/${this.currentWork.id}/`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }

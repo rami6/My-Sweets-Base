@@ -18,6 +18,15 @@ class Wish(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
+        if not self.id:
+            self.set_image()
+        else:
+            this = Wish.objects.get(id=self.id)
+            if this.image != self.image:
+                self.set_image()
+        return super(Wish, self).save(*args, **kwargs)
+
+    def set_image(self, *args, **kwargs):
         if self.image  and self.image.name.lower().endswith(('.jpg', '.jpeg')):
             pilImage = Img.open(BytesIO(self.image.read()))
             for orientation in ExifTags.TAGS.keys():
@@ -36,8 +45,6 @@ class Wish(models.Model):
             pilImage.save(output, format='JPEG', quality=75)
             output.seek(0)
             self.image = File(output, self.image.name)
-
-        return super(Wish, self).save(*args, **kwargs)
 
     @property
     def date_created(self):
