@@ -11,6 +11,7 @@ getWishes: function() {
         })
 },
 getWish: function(id) {
+    $('#currentWish_image_view').css('transform', 'rotate(0deg)');
     this.loading = true;
     axios.get(`/api/wish/${id}/`)
         .then((response) => {

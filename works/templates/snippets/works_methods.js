@@ -11,6 +11,7 @@ getWorks: function() {
         })
 },
 getWork: function(id) {
+    $('#currentWork_image_view').css('transform', 'rotate(0deg)');
     this.loading = true;
     axios.get(`/api/work/${id}/`)
         .then((response) => {
