@@ -41,6 +41,3 @@ For deploy, I use following technologies:
 - Heroku - server
 - PostgreSQL - database(replacement of SQLite)
 - Amazon S3 - storage for pictures which users upload
-  
-Now I'm working to deploy this app in a private brunch. The branch contains sensitive data, so I will never push to GitHub.  
-However, features in this repogitory are keeping up to date because I will try locally and update this master branch first.
