@@ -22,7 +22,7 @@
                         <button type="button" class="btn fourth-btn m-2" v-on:click="switchSort('title')">Title</button>
                         <button type="button" class="btn fourth-btn m-2" v-on:click="switchSort('date')">Date</button>
                     </div>
-                    <div class="col-lg-4 col-md-6 col-sm-12 d-flex align-items-center">
+                    <div class="col-lg-4 col-md-6 col-sm-12 d-flex justify-content-start justify-content-sm-start justify-content-md-end justify-content-lg-end">
                         <div class="form-check form-check-inline">
                           <input class="form-check-input" type="radio" name="displayRadios" id="works-checkbox" value="works" checked="checked" v-model="display">
                           <label class="form-check-label" for="works-checkbox">Works</label>
@@ -31,16 +31,22 @@
                           <input class="form-check-input" type="radio" name="displayRadios" id="wish-list-checkbox" value="wish" v-model="display">
                           <label class="form-check-label" for="wish-list-checkbox">Wish List</label>
                         </div>
+                        <div v-if="display == 'works'">
+                            <input type="image" src='{% static "image/add-button.png" %}' class="add-button ml-2" data-toggle="modal" data-target="#add-work-modal"/>
+                        </div>
+                        <div v-else>
+                            <input type="image" src='{% static "image/add-button.png" %}' class="add-button ml-2" data-toggle="modal" data-target="#add-wish-modal"/>
+                        </div>
                     </div>
                 </div>
                 <div class="row" id="works-wishlist" style="overflow-y: scroll;">
                     <div v-if="display == 'works' && works.length == 0" class="d-flex align-items-center justify-content-center w-100">
                         <button type="button" class="btn m-2" data-toggle="modal" data-target="#add-work-modal">Add an Item to Works</button>
                     </div>
-                    <div v-if="display == 'wish' && wishes.length == 0" class="d-flex align-items-center justify-content-center w-100">
+                    <div v-else-if="display == 'wish' && wishes.length == 0" class="d-flex align-items-center justify-content-center w-100">
                         <button type="button" class="btn m-2" data-toggle="modal" data-target="#add-wish-modal">Add an Item to Wish List</button>
                     </div>
-                    <div v-if="display == 'works'" class="col-lg-4 col-md-6 col-sm-12 p-1" v-for="work in works" v-on:click="getWork(work.id)">
+                    <div v-else-if="display == 'works'" class="col-lg-4 col-md-6 col-sm-12 p-1" v-for="work in works" v-on:click="getWork(work.id)">
                         <div class="bg-white">
                             <div class="p-2">
                                 <h4 class="text-center">${work.title}</h4>
@@ -49,7 +55,7 @@
                             </div>
                         </div>
                     </div>
-                    <div v-if="display == 'wish'" class="col-lg-4 col-md-6 col-sm-12 p-1" v-for="wish in wishes" v-on:click="getWish(wish.id)">
+                    <div v-else class="col-lg-4 col-md-6 col-sm-12 p-1" v-for="wish in wishes" v-on:click="getWish(wish.id)">
                         <div class="bg-white">
                             <div class="p-2">
                                 <h4 class="text-center">${wish.title}</h4>
