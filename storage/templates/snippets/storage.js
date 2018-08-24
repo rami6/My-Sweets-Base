@@ -82,7 +82,7 @@ new Vue({
             }
             this.getIngredients();
         },
-        addIngredient: function() {
+        addIngredient: function(page) {
             if (this.newIngredient.expiration_date == "") {
                 this.newIngredient.expiration_date = null;
             }
@@ -92,6 +92,9 @@ new Vue({
                     this.loading = false;
                     this.getIngredients();
                     this.newIngredient = {'name': null, 'expiration_date': this.getToday()};
+                    if (page == "home") {
+                        $("#add-ingredient-modal").modal('toggle');
+                    }
                 })
                 .catch((err) => {
                     this.loading = false;

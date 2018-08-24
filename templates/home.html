@@ -74,15 +74,24 @@
         <div class="col-12 col-sm-7 col-md-6 col-lg-5">
             <div style="background-color:#FFF9EF;" class="ml-1 mt-1 mr-2 pl-2 pr-2">
                 <div id="vue-el-s" class="mb-0">
-                    <form id="storage-search" v-on:submit.prevent="searchIngredients()" class="form-inline mt-2 ml-2 mb-2" style="display: inline-block;">
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="word"
-                            placeholder="Search"
-                            v-model="word"
-                            v-on:input="clearSearch()">
-                    </form>
+                    <div class="row">
+                        <div class="col-9">
+                            <form id="storage-search" v-on:submit.prevent="searchIngredients()" class="form-inline mt-2 ml-2 mb-2" style="display: inline-block;">
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="word"
+                                    placeholder="Search"
+                                    v-model="word"
+                                    v-on:input="clearSearch()">
+                            </form>
+                        </div>
+                        <div class="col-3">
+                            <div class="float-right">
+                                <input type="image" src='{% static "image/add-button.png" %}' class="add-button ml-2" data-toggle="modal" data-target="#add-ingredient-modal"/>
+                            </div>
+                        </div>
+                    </div>
                     <div>
                         <table class="table table-sm  mt-0 mb-0">
                             <thead id="storage-thead" style="display: block;">

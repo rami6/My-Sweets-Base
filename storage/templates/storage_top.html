@@ -7,7 +7,7 @@
 {% block content %}
 <div id="vue-el-s" style="background-color:#FFF9EF;" class="h-100 p-4 mt-2">
     <div id="util-row" class="mb-4">
-        <form v-on:submit.prevent="addIngredient()" class="form-inline m-2">
+        <form v-on:submit.prevent="addIngredient('storage')" class="form-inline m-2">
             <input
                 type="text"
                 class="form-control"

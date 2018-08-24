@@ -1,3 +1,43 @@
+<!-- Add Ingredient modal -->
+<div class="modal fade" id="add-ingredient-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">ADD Ingredient</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <form v-on:submit.prevent="addIngredient('home')">
+        <div class="modal-body">
+            <div class="form-group">
+            <input
+                type="text"
+                class="form-control"
+                id="name"
+                placeholder="Name"
+                v-model="newIngredient.name">
+            </div>
+            <div class="form-group">
+            <input
+                type="date"
+                class="form-control"
+                id="expiration_date"
+                v-model="newIngredient.expiration_date">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn secondary-btn" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn primary-btn">Add</button>
+        </div>
+        </form>
+      </div>
+    </div>
+   <div class="loading" v-if="loading===true">Loading&#8230;</div>
+</div>
+<!-- End of Edit Ingredient modal -->
+
 <!-- Edit Ingredient modal -->
 <div class="modal fade" id="edit-ingredient-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -8,23 +48,27 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form v-on:submit.prevent="updateIngredient()" class="form-inline">
+        <form v-on:submit.prevent="updateIngredient()">
         <div class="modal-body">
-          <input
-            type="text"
-            class="form-control"
-            id="name"
-            placeholder="Enter name"
-            v-model="currentIngredient.name"
-            required="required" >
-          <input
-            type="date"
-            class="form-control"
-            id="expiration_date"
-            v-model="currentIngredient.expiration_date" >
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                placeholder="Enter name"
+                v-model="currentIngredient.name"
+                required="required" >
+            </div>
+            <div class="form-group">
+              <input
+                type="date"
+                class="form-control"
+                id="expiration_date"
+                v-model="currentIngredient.expiration_date" >
+            </div>
         </div>
         <div class="modal-footer">
-        <button type="submit" class="btn btn-primary" >Save changes</button>
+        <button type="submit" class="btn primary-btn" >Save changes</button>
         </div>
         </form>
       </div>
@@ -48,8 +92,8 @@
           Are you sure to delete "${currentIngredient.name}"?
         </div>
         <div class="modal-footer">
-        <button type="button" class="btn btn-secondary m-progress" data-dismiss="modal">No</button>
-        <button type="submit" class="btn btn-primary" >Yes</button>
+        <button type="button" class="btn secondary-btn m-progress" data-dismiss="modal">No</button>
+        <button type="submit" class="btn primary-btn" >Yes</button>
         </div>
         </form>
       </div>
