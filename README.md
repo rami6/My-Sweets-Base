@@ -37,7 +37,11 @@ When you click recipe link, you can see recipe and your storage at the same time
 - Django REST Framework (library)
 - SQLite
   
-For deploy, I use following technologies:
+For deployment, I use following technologies:
 - Heroku - server
 - PostgreSQL - database (replacement of SQLite)
 - Amazon S3 - storage for pictures which users upload
+  
+You can try this app by visiting https://my-sweets-base.herokuapp.com !
+  
+Note: The code in this repository works in local environment. Settings for deployment are not included.
