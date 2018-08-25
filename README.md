@@ -34,10 +34,10 @@ When you click recipe link, you can see recipe and your storage at the same time
 ## Ingredients of this app
 - Vue.js
 - Django
-- Django REST Framework(library)
+- Django REST Framework (library)
 - SQLite
   
 For deploy, I use following technologies:
 - Heroku - server
-- PostgreSQL - database(replacement of SQLite)
+- PostgreSQL - database (replacement of SQLite)
 - Amazon S3 - storage for pictures which users upload
