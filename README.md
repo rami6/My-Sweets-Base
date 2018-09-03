@@ -24,7 +24,7 @@ Integrate all information which helps sweets making.
 You can add multiple recipes
 <img width="1382" alt="screen shot 2018-08-23 at 2 02 20 am" src="https://user-images.githubusercontent.com/30137645/44516579-5067c900-a67a-11e8-9f32-880d9b531df8.png">
   
-When you click recipe link, you can see recipe and your storage at the same time while edit your shopping list.
+Two windows open by clicking recipe link. You can see the recipe and your storage at the same time while edit your shopping list.
 <img width="1440" alt="screen shot 2018-07-30 at 12 44 38 am" src="https://user-images.githubusercontent.com/30137645/43388538-4c1ff2ee-939e-11e8-9e20-df742c472f41.png">
 
 ## Upcoming Features
