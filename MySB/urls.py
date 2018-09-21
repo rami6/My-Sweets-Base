@@ -6,14 +6,19 @@ from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib.auth.views import logout, password_reset, password_reset_done, password_reset_confirm, password_reset_complete
 from .routers import router
-from .apiviews import StorageSearchAPIView_expirationA, StorageSearchAPIView_expirationD, StorageSearchAPIView_nameA, StorageSearchAPIView_nameD, \
-    RecipeListAPIView, WorksSearchAPIView_titleA, WorksSearchAPIView_titleD, WorksSearchAPIView_dateA, WorksSearchAPIView_dateD, \
-    WishRecipeListAPIView, WishlistSearchAPIView_titleA, WishlistSearchAPIView_titleD, WishlistSearchAPIView_dateA, WishlistSearchAPIView_dateD
+from .apiviews import *
 from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.custom_login, name='landing'),
+    path('home/', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('home/util-view', TemplateView.as_view(template_name='util_view.html'), name='util'),
+    path('works/', include('works.urls')),
+    path('storage/', include('storage.urls')),
+    path('wish-list/', include('wishlist.urls')),
+
+    # path for user authenticate function
     path('signup/', views.signup, name='signup'),
     path('logout/', logout, {'template_name': 'accounts/logout.html'}),
     path('privacy-policy/', TemplateView.as_view(template_name='privacy_policy.html'), name='privacy_policy'),
@@ -25,11 +30,8 @@ urlpatterns = [
     url(r'reset-password/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', password_reset_confirm , name='password_reset_confirm'),
     path('reset-password/complete/', password_reset_complete, name='password_reset_complete'),
     path('delete-account/', views.delete_account, name='delete_account'),
-    path('home/', TemplateView.as_view(template_name='home.html'), name='home'),
-    path('home/util-view', TemplateView.as_view(template_name='util_view.html'), name='util'),
-    path('works/', include('works.urls')),
-    path('storage/', include('storage.urls')),
-    path('wish-list/', include('wishlist.urls')),
+
+    # path for APIViews
     path('api/storage/e-a/', StorageSearchAPIView_expirationA.as_view()),
     path('api/storage/e-d/', StorageSearchAPIView_expirationD.as_view()),
     path('api/storage/n-a/', StorageSearchAPIView_nameA.as_view()),
