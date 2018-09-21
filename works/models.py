@@ -27,6 +27,7 @@ class Work(models.Model):
                 self.set_image()
         return super(Work, self).save(*args, **kwargs)
 
+    # Rotate image before save depends on EXIF tag
     def set_image(self, *args, **kwargs):
         if self.image and self.image.name.lower().endswith(('.jpg', '.jpeg')):
             pilImage = Img.open(BytesIO(self.image.read()))

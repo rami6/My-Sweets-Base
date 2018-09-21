@@ -3,6 +3,7 @@
 {% block content %}
     {% load static %}
     <div class="row ml-1">
+        <!-- Left side consisted of Work and Wish List -->
         <div class="col-12 col-sm-5 col-md-6 col-lg-7" style="background-color:#E2D1B1;" id="vue-el-w">
             <div id="left-list" class="h-100">
                 <div class="row" id="util-row">
@@ -71,6 +72,8 @@
         {% include 'snippets/wishlist_modals.html' %}
 
         </div>
+
+        <!-- Right side consisted of Storage and Shopping List -->
         <div class="col-12 col-sm-7 col-md-6 col-lg-5">
             <div style="background-color:#FFF9EF;" class="ml-1 mt-1 mr-2 pl-2 pr-2">
                 <div id="vue-el-s" class="mb-0">
@@ -188,7 +191,7 @@
                                 v-model="currentItem.amount">
                             </div>
                             <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary" >Save changes</button>
+                                <button type="submit" class="btn btn-primary" >Save changes</button>
                             </div>
                             </form>
                           </div>

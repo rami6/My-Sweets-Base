@@ -1,3 +1,5 @@
+// This script is shared among dashboard and work_top view.
+
 getWorks: function() {
     this.loading = true;
     axios.get(this.workAPIUrls[this.sortType])

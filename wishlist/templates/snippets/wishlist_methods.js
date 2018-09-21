@@ -1,3 +1,5 @@
+// This script is shared among dashboard and wishlist_top view.
+
 getWishes: function() {
     this.loading = true;
     axios.get(this.wishAPIUrls[this.sortType])

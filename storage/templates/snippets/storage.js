@@ -1,3 +1,5 @@
+// This script is shared among dashboard and storage_top view.
+
 axios.defaults.headers.common['X-CSRFToken'] = "{{ csrf_token }}";
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 

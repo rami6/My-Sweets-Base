@@ -8,6 +8,8 @@ from works.serializers import RecipeSerializer, WorkSerializer
 from wishlist.models import WishRecipe, Wish
 from wishlist.serializers import WishRecipeSerializer, WishSerializer
 
+# A = Ascending order
+# D = Descending order
 
 class StorageSearchAPIView_expirationA(generics.ListAPIView):
     serializer_class = IngredientSerializer

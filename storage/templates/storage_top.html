@@ -7,6 +7,7 @@
 {% block content %}
 <div id="vue-el-s" style="background-color:#FFF9EF;" class="h-100 p-4 mt-2">
     <div id="util-row" class="mb-4">
+        <!-- Add Ingredient Form -->
         <form v-on:submit.prevent="addIngredient('storage')" class="form-inline m-2">
             <input
                 type="text"
@@ -25,6 +26,8 @@
             </div>
             <button type="submit" class="btn btn-dark ml-1">Add</button>
         </form>
+
+        <!-- Search Ingredient Form -->
         <form v-on:submit.prevent="searchIngredients()" class="form-inline mt-2 ml-2" style="display: inline-block">
             <input
                 type="text"
@@ -34,6 +37,8 @@
                 v-model="word">
         </form>
     </div>
+
+    <!-- Ingredient List -->
     <table class="table">
         <thead id="storage-thead" style="display: block;">
           <tr>
